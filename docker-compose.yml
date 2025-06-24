@@ -10,9 +10,12 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./frontend:/app/frontend
-      - /app/frontend/node_modules
-      - /app/frontend/.next
+      - ./frontend/public:/app/frontend/public
+      - ./frontend/src:/app/frontend/src
+      - ./frontend/tailwind.config.mjs:/app/frontend/tailwind.config.mjs
+      - ./frontend/postcss.config.mjs:/app/frontend/postcss.config.mjs
+      - ./frontend/next.config.mjs:/app/frontend/next.config.mjs
+      - ./frontend/tsconfig.json:/app/frontend/tsconfig.json
     environment:
       - NODE_ENV=development
     networks:
@@ -32,7 +35,7 @@ services:
     env_file:
       - ./backend/.env
     depends_on:
-      - db # This will be added when we include the database
+      - db
     networks:
       - app-network
   
@@ -42,13 +45,15 @@ services:
     container_name: school-website-db
     restart: always
     environment:
-      POSTGRES_USER: your_db_user
-      POSTGRES_PASSWORD: your_db_password
-      POSTGRES_DB: your_db_name
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_DATABASE}
     ports:
       - "5432:5432"
     volumes:
       - postgres-data:/var/lib/postgresql/data
+      # Add volume for initial schema
+      - ./backend/models/schema.sql:/docker-entrypoint-initdb.d/schema.sql
     networks:
       - app-network
 
