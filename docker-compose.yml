@@ -1,0 +1,61 @@
+version: '3.8'
+
+services:
+  # Frontend Service (Next.js)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: school-website-frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/app/frontend
+      - /app/frontend/node_modules
+      - /app/frontend/.next
+    environment:
+      - NODE_ENV=development
+    networks:
+      - app-network
+
+  # Backend Service (Node.js/Express)
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: school-website-backend
+    ports:
+      - "5001:5000"
+    volumes:
+      - ./backend:/app/backend
+      - /app/backend/node_modules
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - db # This will be added when we include the database
+    networks:
+      - app-network
+  
+  # Database Service (PostgreSQL)
+  db:
+    image: postgres:15-alpine
+    container_name: school-website-db
+    restart: always
+    environment:
+      POSTGRES_USER: your_db_user
+      POSTGRES_PASSWORD: your_db_password
+      POSTGRES_DB: your_db_name
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+    driver: local 
