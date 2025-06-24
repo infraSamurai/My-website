@@ -21,7 +21,7 @@ export default function VisitForm() {
     setStatus('sending');
 
     try {
-      const response = await fetch('/api/send-visit-email', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/send-visit-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

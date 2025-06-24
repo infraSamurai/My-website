@@ -23,7 +23,7 @@ export default function AdmissionForm() {
     setStatus('sending');
 
     try {
-      const response = await fetch('/api/send-admission-email', {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/send-admission-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
