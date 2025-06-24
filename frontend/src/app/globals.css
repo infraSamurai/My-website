@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply bg-brand-neutral-900 text-brand-neutral-300 font-sans;
+  }
+
+  /* Force a default light text color on all elements */
+  * {
+    @apply text-inherit;
+  }
+
+  a {
+    @apply text-inherit hover:text-brand-primary;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-heading text-brand-neutral-100;
+  }
+}
+
+@layer components {
+  .section-padding {
+    @apply py-16 md:py-24;
+  }
+  .container {
+    @apply mx-auto px-4;
+  }
+}

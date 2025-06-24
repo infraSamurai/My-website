@@ -1,0 +1,10 @@
+# Ignore node_modules
+node_modules
+
+# Ignore local build output
+.next
+
+# Ignore local development files
+npm-debug.log
+README.md
+.env.local 
