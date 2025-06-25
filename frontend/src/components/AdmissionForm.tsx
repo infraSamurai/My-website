@@ -21,9 +21,9 @@ export default function AdmissionForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('sending');
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com';
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/send-admission-email`, {
+      const response = await fetch(`${apiUrl}/api/send-admission-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

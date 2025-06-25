@@ -19,9 +19,9 @@ export default function VisitForm() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setStatus('sending');
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com';
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/send-visit-email`, {
+      const response = await fetch(`${apiUrl}/api/send-visit-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
