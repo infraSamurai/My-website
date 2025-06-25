@@ -18,11 +18,14 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus('sending');
 
-    // Use fallback URL if environment variable is not set
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com';
+    // In development, use relative URL (handled by Next.js rewrites)
+    // In production, use environment variable or fallback
+    const apiUrl = process.env.NODE_ENV === 'development' 
+      ? '/api' 
+      : (process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com');
 
     try {
-      const response = await fetch(`${apiUrl}/api/send-contact-email`, {
+      const response = await fetch(`${apiUrl}/send-contact-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -18,6 +18,7 @@ services:
       - ./frontend/tsconfig.json:/app/frontend/tsconfig.json
     environment:
       - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:5001
     networks:
       - app-network
 
