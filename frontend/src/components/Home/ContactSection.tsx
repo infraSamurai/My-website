@@ -18,12 +18,8 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus('sending');
 
-    // Debug: Log the environment variable
-    console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
-    
     // Use fallback URL if environment variable is not set
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com';
-    console.log('Using API URL:', apiUrl);
 
     try {
       const response = await fetch(`${apiUrl}/api/send-contact-email`, {
@@ -90,8 +86,7 @@ export default function ContactSection() {
                 <div className="text-3xl">🕐</div>
                 <div>
                   <h4 className="font-semibold text-brand-neutral-100 mb-1">Office Hours</h4>
-                  <p className="text-brand-neutral-400">Mon-Fri: 8:00 AM - 5:00 PM</p>
-                  <p className="text-brand-neutral-400">Saturday: 9:00 AM - 2:00 PM</p>
+                  <p className="text-brand-neutral-400">Monday - Saturday: 8:00 AM - 6:00 PM</p>
                 </div>
               </div>
             </div>
