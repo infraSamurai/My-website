@@ -18,8 +18,15 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus('sending');
 
+    // Debug: Log the environment variable
+    console.log('NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
+    
+    // Use fallback URL if environment variable is not set
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com';
+    console.log('Using API URL:', apiUrl);
+
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/send-contact-email`, {
+      const response = await fetch(`${apiUrl}/api/send-contact-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
