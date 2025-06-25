@@ -53,7 +53,7 @@ const sendVisitEmail = async (req, res) => {
 
   const mailOptions = {
     from: process.env.EMAIL_USER,
-    to: process.env.EMAIL_USER,
+    to: 'devansh.prakhar@gmail.com', // Destination email
     subject: 'New School Visit Request',
     html: `
       <h1>New School Visit Request</h1>

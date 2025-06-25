@@ -78,8 +78,8 @@ export default function ContactSection() {
                 <div className="text-3xl">✉️</div>
                 <div>
                   <h4 className="font-semibold text-brand-neutral-100 mb-1">Email Us</h4>
-                  <p className="text-brand-neutral-400">info@akshararambh.edu</p>
-                  <p className="text-brand-neutral-400">admissions@akshararambh.edu</p>
+                  <p className="text-brand-neutral-400">devansh.prakhar@gmail.com</p>
+                  <p className="text-brand-neutral-400">devansh.prakhar@gmail.com</p>
                 </div>
               </div>
               <div className="flex gap-4">
