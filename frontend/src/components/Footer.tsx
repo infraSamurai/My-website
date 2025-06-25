@@ -59,9 +59,9 @@ export default function Footer() {
           {/* Contact Info */}
           <div>
             <h4 className="font-semibold text-lg mb-4 text-brand-neutral-100">Contact Us</h4>
-            <p className="text-brand-neutral-400">123 Learning Lane, Knowledge City</p>
-            <p className="text-brand-neutral-400">contact@akshararambh.edu</p>
-            <p className="text-brand-neutral-400">+1 (234) 567-890</p>
+            <p className="text-brand-neutral-400">Akshararambh Public School, Near Daitrababa Mandir</p>
+            <p className="text-brand-neutral-400">Murdaha, Varanasi</p>
+            <p className="text-brand-neutral-400">+91 9451016643</p>
           </div>
         </div>
 
