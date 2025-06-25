@@ -6,6 +6,7 @@ const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const admissionRoutes = require('./routes/admissionsRoutes');
 const emailRoutes = require('./routes/emailRoutes');
+const articleRoutes = require('./routes/articleRoutes');
 
 const app = express();
 
@@ -48,6 +49,9 @@ app.use('/api/admissions', admissionRoutes);
 
 // Email routes
 app.use('/api', emailRoutes);
+
+// Article routes
+app.use('/api/articles', articleRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

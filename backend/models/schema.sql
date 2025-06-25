@@ -274,13 +274,9 @@ CREATE TABLE contact_submissions (
 
 -- Settings table
 CREATE TABLE settings (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    setting_key VARCHAR(100) UNIQUE NOT NULL,
-    setting_value TEXT,
-    setting_type VARCHAR(20) DEFAULT 'string' CHECK (setting_type IN ('string', 'number', 'boolean', 'json')),
+    key VARCHAR(100) PRIMARY KEY,
+    value JSONB,
     description TEXT,
-    is_public BOOLEAN DEFAULT false,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -294,6 +290,23 @@ CREATE TABLE notifications (
     is_read BOOLEAN DEFAULT false,
     read_at TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Articles table for blog/news
+CREATE TABLE articles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    content TEXT NOT NULL,
+    excerpt VARCHAR(500),
+    cover_image_url VARCHAR(500),
+    author_id UUID REFERENCES users(id) ON DELETE SET NULL,
+    subject VARCHAR(100) NOT NULL,
+    tags TEXT[],
+    is_published BOOLEAN DEFAULT false,
+    published_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Indexes for better performance
@@ -325,15 +338,9 @@ INSERT INTO grades (grade_name, grade_level, min_age_years, max_age_years, total
 ('Grade 10', 12, 14, 15, 20, 20, 38000.00, 5000.00);
 
 -- Insert default settings
-INSERT INTO settings (setting_key, setting_value, setting_type, description, is_public) VALUES
-('school_name', 'Vidya Mandir School', 'string', 'School name', true),
-('school_address', '123 Education Street, Varanasi, UP 221001', 'string', 'School address', true),
-('school_phone', '+91 542 2345678', 'string', 'School phone number', true),
-('school_email', 'info@vidyamandir.edu', 'string', 'School email', true),
-('admission_open', 'true', 'boolean', 'Whether admissions are currently open', true),
-('academic_year', '2024-25', 'string', 'Current academic year', true),
-('max_file_size', '5242880', 'number', 'Maximum file upload size in bytes', false),
-('allowed_file_types', '["jpg", "jpeg", "png", "pdf", "doc", "docx"]', 'json', 'Allowed file types for uploads', false);
+INSERT INTO settings (key, value, description) VALUES
+    ('site_title', '"Akshararambh Public School"', 'The main title of the website'),
+    ('contact_email', '"contact@akshararambh.edu"', 'Public contact email address');
 
 -- Create triggers for updated_at timestamps
 CREATE OR REPLACE FUNCTION update_updated_at_column()
@@ -360,4 +367,4 @@ CREATE TRIGGER update_pages_updated_at BEFORE UPDATE ON pages FOR EACH ROW EXECU
 CREATE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON blog_posts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_events_updated_at BEFORE UPDATE ON events FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_settings_updated_at BEFORE UPDATE ON settings FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
+CREATE TRIGGER update_articles_updated_at BEFORE UPDATE ON articles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
