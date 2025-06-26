@@ -1,19 +1,14 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    // Only apply rewrites in development (Docker Compose)
-    if (process.env.NODE_ENV === 'development') {
-      return [
-        {
-          source: '/api/:path*',
-          destination: 'http://backend:5001/api/:path*',
-        },
-      ];
-    }
-    // In production, let the environment variable handle API routing
-    return [];
+    const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    return [
+      {
+        source: '/api/:path*',
+        destination: `${API_URL}/api/:path*`,
+      },
+    ];
   },
 };
 
 export default nextConfig;
- 

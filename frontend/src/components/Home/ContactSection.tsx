@@ -19,13 +19,8 @@ export default function ContactSection() {
     e.preventDefault();
     setStatus('sending');
 
-    // In development, use relative URL (handled by Next.js rewrites)
-    // In production, use environment variable or fallback
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
-    console.log('API URL (ContactSection):', apiUrl);
-
     try {
-      const response = await fetch(`${apiUrl}/api/send-contact-email`, {
+      const response = await fetch('/api/send-contact-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
