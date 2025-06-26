@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 export default function VisitForm() {
+  console.log('process.env.NEXT_PUBLIC_API_URL (VisitForm):', process.env.NEXT_PUBLIC_API_URL);
   const [formData, setFormData] = useState({
     parentName: '',
     parentEmail: '',
@@ -20,6 +21,7 @@ export default function VisitForm() {
     e.preventDefault();
     setStatus('sending');
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    console.log('apiUrl (VisitForm):', apiUrl);
     try {
       const response = await fetch(`${apiUrl}/api/send-visit-email`, {
         method: 'POST',

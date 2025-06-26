@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 export default function AdmissionForm() {
+  console.log('process.env.NEXT_PUBLIC_API_URL (AdmissionForm):', process.env.NEXT_PUBLIC_API_URL);
   const [formData, setFormData] = useState({
     parentName: '',
     parentEmail: '',
@@ -22,6 +23,7 @@ export default function AdmissionForm() {
     e.preventDefault();
     setStatus('sending');
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
+    console.log('apiUrl (AdmissionForm):', apiUrl);
     try {
       const response = await fetch(`${apiUrl}/api/send-admission-email`, {
         method: 'POST',
