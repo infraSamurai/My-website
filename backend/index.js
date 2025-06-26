@@ -6,6 +6,7 @@ const db = require('./config/db');
 const studentRoutes = require('./routes/studentRoutes');
 const admissionRoutes = require('./routes/admissionsRoutes');
 const emailRoutes = require('./routes/emailRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -48,6 +49,9 @@ app.use('/api/admissions', admissionRoutes);
 
 // Email routes
 app.use('/api', emailRoutes);
+
+// Admin routes
+app.use('/api/admin', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

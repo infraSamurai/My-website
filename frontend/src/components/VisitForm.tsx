@@ -22,9 +22,7 @@ export default function VisitForm() {
 
     // In development, use relative URL (handled by Next.js rewrites)
     // In production, use environment variable or fallback
-    const apiUrl = process.env.NODE_ENV === 'development' 
-      ? '/api' 
-      : (process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com');
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5001';
 
     try {
       const response = await fetch(`${apiUrl}/api/send-visit-email`, {

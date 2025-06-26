@@ -1,11 +1,30 @@
 const nodemailer = require('nodemailer');
+const multer = require('multer');
+const upload = multer();
+const db = require('../config/db');
 
+// Create transporter with more robust Gmail configuration
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
     },
+    // Add these options for better Gmail compatibility
+    secure: true,
+    port: 465,
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
+// Verify transporter connection
+transporter.verify(function(error, success) {
+    if (error) {
+        console.error('Email transporter verification failed:', error);
+    } else {
+        console.log('Email server is ready to send messages');
+    }
 });
 
 const sendAdmissionEmail = async (req, res) => {
@@ -104,8 +123,92 @@ const sendContactEmail = async (req, res) => {
   }
 };
 
+const sendArticleSubmission = async (req, res) => {
+  // For multipart/form-data, use multer to parse
+  upload.single('file')(req, res, async function (err) {
+    if (err) {
+      return res.status(400).json({ message: 'File upload error' });
+    }
+    
+    const { name, email, title, content, category } = req.body;
+    const file = req.file;
+    
+    if (!name || !email || !title || (!content && !file)) {
+      return res.status(400).json({ message: 'Please fill out all required fields.' });
+    }
+
+    try {
+      // Save to database
+      const query = `
+        INSERT INTO article_submissions (title, content, author_name, author_email, category, file_name, file_size, mime_type)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        RETURNING id
+      `;
+      
+      const values = [
+        title,
+        content || null,
+        name,
+        email,
+        category,
+        file ? file.originalname : null,
+        file ? file.size : null,
+        file ? file.mimetype : null
+      ];
+      
+      const result = await db.query(query, values);
+      const submissionId = result.rows[0].id;
+
+      // Send email notification
+      const mailOptions = {
+        from: process.env.EMAIL_USER,
+        to: 'devansh.prakhar@gmail.com',
+        subject: `New Article Submission: ${title} (${category})`,
+        html: `
+          <h2>New Article Submission</h2>
+          <p><strong>Submission ID:</strong> ${submissionId}</p>
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Category:</strong> ${category}</p>
+          <p><strong>Title:</strong> ${title}</p>
+          <p><strong>Content:</strong></p>
+          <div style="white-space: pre-line;">${content || 'No content provided (see attachment).'}</div>
+          <hr>
+          <p><strong>Admin Actions:</strong></p>
+          <p>Approve: <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin/articles/${submissionId}/approve">Approve Article</a></p>
+          <p>Reject: <a href="${process.env.FRONTEND_URL || 'http://localhost:3000'}/admin/articles/${submissionId}/reject">Reject Article</a></p>
+        `,
+        attachments: file ? [{
+          filename: file.originalname,
+          content: file.buffer
+        }] : []
+      };
+      
+      try {
+        await transporter.sendMail(mailOptions);
+        console.log('Email notification sent successfully');
+      } catch (emailError) {
+        console.error('Email notification failed:', emailError);
+        console.error('Error details:', {
+          code: emailError.code,
+          command: emailError.command,
+          response: emailError.response,
+          responseCode: emailError.responseCode
+        });
+        // Continue with the process even if email fails
+      }
+      
+      res.status(200).json({ message: 'Article submitted successfully.' });
+    } catch (error) {
+      console.error('Error processing article submission:', error);
+      res.status(500).json({ message: 'Failed to submit article. Please try again later.' });
+    }
+  });
+};
+
 module.exports = {
   sendAdmissionEmail,
   sendVisitEmail,
   sendContactEmail,
+  sendArticleSubmission,
 }; 

@@ -207,19 +207,61 @@ CREATE TABLE pages (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+-- Blog posts table
 CREATE TABLE blog_posts (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     title VARCHAR(200) NOT NULL,
     slug VARCHAR(200) UNIQUE NOT NULL,
     excerpt TEXT,
     content TEXT NOT NULL,
+    author_name VARCHAR(100) NOT NULL,
+    author_email VARCHAR(255) NOT NULL,
     featured_image_url VARCHAR(500),
-    author_id UUID REFERENCES users(id),
-    category VARCHAR(100),
     tags TEXT[],
     is_published BOOLEAN DEFAULT false,
     published_at TIMESTAMP,
     view_count INTEGER DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Article submissions table (for pending articles)
+CREATE TABLE article_submissions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    title VARCHAR(200) NOT NULL,
+    content TEXT,
+    author_name VARCHAR(100) NOT NULL,
+    author_email VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    file_name VARCHAR(255),
+    file_url VARCHAR(500),
+    file_size INTEGER,
+    mime_type VARCHAR(100),
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    admin_notes TEXT,
+    reviewed_by UUID REFERENCES users(id),
+    reviewed_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Articles table (for published articles)
+CREATE TABLE articles (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    submission_id UUID REFERENCES article_submissions(id),
+    title VARCHAR(200) NOT NULL,
+    slug VARCHAR(200) UNIQUE NOT NULL,
+    content TEXT,
+    author_name VARCHAR(100) NOT NULL,
+    author_email VARCHAR(255) NOT NULL,
+    category VARCHAR(50) NOT NULL,
+    file_name VARCHAR(255),
+    file_url VARCHAR(500),
+    file_size INTEGER,
+    mime_type VARCHAR(100),
+    view_count INTEGER DEFAULT 0,
+    is_featured BOOLEAN DEFAULT false,
+    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -349,4 +391,6 @@ CREATE TRIGGER update_fee_payments_updated_at BEFORE UPDATE ON fee_payments FOR 
 CREATE TRIGGER update_pages_updated_at BEFORE UPDATE ON pages FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON blog_posts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_events_updated_at BEFORE UPDATE ON events FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
+CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_article_submissions_updated_at BEFORE UPDATE ON article_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+CREATE TRIGGER update_articles_updated_at BEFORE UPDATE ON articles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 

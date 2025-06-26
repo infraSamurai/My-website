@@ -17,4 +17,9 @@ router.post('/send-visit-email', sendVisitEmail);
 // @access  Public
 router.post('/send-contact-email', sendContactEmail);
 
+// @route   POST /api/send-article-submission
+// @desc    Receives article submissions with optional file and emails them to admin
+// @access  Public
+router.post('/send-article-submission', require('../controllers/emailController').sendArticleSubmission);
+
 module.exports = router; 
