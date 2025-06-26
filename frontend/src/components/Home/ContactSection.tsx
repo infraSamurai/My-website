@@ -2,6 +2,7 @@
 import { useState } from 'react';
 
 export default function ContactSection() {
+  console.log('process.env.NEXT_PUBLIC_API_URL:', process.env.NEXT_PUBLIC_API_URL);
   const [formData, setFormData] = useState({
     name: '',
     email: '',
