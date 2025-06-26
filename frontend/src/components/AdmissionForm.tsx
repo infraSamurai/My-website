@@ -29,7 +29,7 @@ export default function AdmissionForm() {
       : (process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com');
 
     try {
-      const response = await fetch(`${apiUrl}/send-admission-email`, {
+      const response = await fetch(`${apiUrl}/api/send-admission-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),

@@ -25,7 +25,7 @@ export default function ContactSection() {
       : (process.env.NEXT_PUBLIC_API_URL || 'https://my-website-9h1q.onrender.com');
 
     try {
-      const response = await fetch(`${apiUrl}/send-contact-email`, {
+      const response = await fetch(`${apiUrl}/api/send-contact-email`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
