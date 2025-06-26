@@ -292,23 +292,6 @@ CREATE TABLE notifications (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Articles table for blog/news
-CREATE TABLE articles (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    title VARCHAR(255) NOT NULL,
-    slug VARCHAR(255) UNIQUE NOT NULL,
-    content TEXT NOT NULL,
-    excerpt VARCHAR(500),
-    cover_image_url VARCHAR(500),
-    author_id UUID REFERENCES users(id) ON DELETE SET NULL,
-    subject VARCHAR(100) NOT NULL,
-    tags TEXT[],
-    is_published BOOLEAN DEFAULT false,
-    published_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 -- Indexes for better performance
 CREATE INDEX idx_students_admission_number ON students(admission_number);
 CREATE INDEX idx_students_current_grade ON students(current_grade);
@@ -366,5 +349,4 @@ CREATE TRIGGER update_fee_payments_updated_at BEFORE UPDATE ON fee_payments FOR 
 CREATE TRIGGER update_pages_updated_at BEFORE UPDATE ON pages FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON blog_posts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_events_updated_at BEFORE UPDATE ON events FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_articles_updated_at BEFORE UPDATE ON articles FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
+CREATE TRIGGER update_contact_submissions_updated_at BEFORE UPDATE ON contact_submissions FOR EACH ROW EXECUTE FUNCTION update_updated_at_column(); 
