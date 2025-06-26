@@ -18,6 +18,7 @@ services:
       - ./frontend/tsconfig.json:/app/frontend/tsconfig.json
     environment:
       - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://localhost:5001
     networks:
       - app-network
 
@@ -31,14 +32,13 @@ services:
       - "5001:5000"
     volumes:
       - ./backend:/app/backend
-      - /app/backend/node_modules
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-    env_file:
-      - .env
+      - DATABASE_URL=postgresql://postgres:yourpassword@db:5432/school_db
+      - EMAIL_USER=devansh.prakhar@gmail.com
+      - EMAIL_PASS=nnvgucdgchkafrsv
+      - CORS_ORIGIN=http://localhost:3000
     networks:
       - app-network
   
@@ -48,9 +48,9 @@ services:
     container_name: school-website-db
     restart: always
     environment:
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_DATABASE}
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: yourpassword
+      POSTGRES_DB: school_db
     ports:
       - "5432:5432"
     volumes:

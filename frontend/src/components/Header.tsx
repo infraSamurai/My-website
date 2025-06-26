@@ -5,10 +5,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 const navLinks = [
-  { href: '#about', label: 'About Us' },
-  { href: '#academics', label: 'Academics' },
-  { href: '#admissions', label: 'Admissions' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#about', label: 'About' },
+  { href: '/#facilities', label: 'Facilities' },
+  { href: '/#admissions', label: 'Admissions' },
+  { href: '/articles', label: 'Articles' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export default function Header() {

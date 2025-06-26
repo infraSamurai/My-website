@@ -2,10 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const db = require('./config/db');
-const authRoutes = require('./routes/authRoutes');
+// const authRoutes = require('./routes/authRoutes');
 const studentRoutes = require('./routes/studentRoutes');
 const admissionRoutes = require('./routes/admissionsRoutes');
 const emailRoutes = require('./routes/emailRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -38,7 +39,7 @@ app.get('/', (req, res) => {
 });
 
 // Authentication routes
-app.use('/api/auth', authRoutes);
+// app.use('/api/auth', authRoutes);
 
 // Student routes
 app.use('/api/students', studentRoutes);
@@ -48,6 +49,9 @@ app.use('/api/admissions', admissionRoutes);
 
 // Email routes
 app.use('/api', emailRoutes);
+
+// Admin routes
+app.use('/api/admin', adminRoutes);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
