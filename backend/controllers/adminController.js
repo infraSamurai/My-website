@@ -64,8 +64,8 @@ const approveArticle = async (req, res) => {
 
         // Insert into articles table
         const articleQuery = `
-            INSERT INTO articles (submission_id, title, slug, content, author_name, author_email, category, file_name, file_size, mime_type)
-            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+            INSERT INTO articles (submission_id, title, slug, content, author_name, author_email, category, file_name, file_size, mime_type, file_data)
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
             RETURNING id
         `;
         
@@ -79,7 +79,8 @@ const approveArticle = async (req, res) => {
             submission.category,
             submission.file_name,
             submission.file_size,
-            submission.mime_type
+            submission.mime_type,
+            submission.file_data
         ];
 
         await db.query(articleQuery, articleValues);
@@ -204,11 +205,120 @@ const getArticlesByCategory = async (req, res) => {
     }
 };
 
+// Get categories with article counts
+const getCategoryCounts = async (req, res) => {
+    try {
+        const query = `
+            SELECT category, COUNT(*) as article_count
+            FROM articles
+            GROUP BY category
+            ORDER BY category
+        `;
+        const result = await db.query(query);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching category counts:', error);
+        res.status(500).json({ message: 'Failed to fetch category counts' });
+    }
+};
+
+// Increment clap count for an article
+const clapArticle = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const query = 'UPDATE articles SET claps = claps + 1 WHERE id = $1 RETURNING claps';
+        const result = await db.query(query, [id]);
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'Article not found' });
+        }
+        res.json({ claps: result.rows[0].claps });
+    } catch (error) {
+        console.error('Error clapping article:', error);
+        res.status(500).json({ message: 'Failed to clap article' });
+    }
+};
+
+// Get top 3 featured articles
+const getFeaturedArticles = async (req, res) => {
+    try {
+        const query = `
+            SELECT id, title, slug, category, author_name, published_at, content 
+            FROM articles 
+            ORDER BY claps DESC, published_at DESC 
+            LIMIT 3
+        `;
+        const result = await db.query(query);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching featured articles:', error);
+        res.status(500).json({ message: 'Failed to fetch featured articles' });
+    }
+};
+
+// Serve uploaded file
+const serveFile = async (req, res) => {
+    const { submissionId } = req.params;
+
+    try {
+        // First try to get file from submissions table
+        let query = 'SELECT file_data, mime_type, file_name FROM article_submissions WHERE id = $1';
+        let result = await db.query(query, [submissionId]);
+        
+        // If not found in submissions, try articles table
+        if (result.rows.length === 0) {
+            query = 'SELECT file_data, mime_type, file_name FROM articles WHERE id = $1';
+            result = await db.query(query, [submissionId]);
+        }
+        
+        if (result.rows.length === 0) {
+            return res.status(404).json({ message: 'File not found' });
+        }
+
+        const { file_data, mime_type, file_name } = result.rows[0];
+
+        if (!file_data) {
+            return res.status(404).json({ message: 'No file data found' });
+        }
+
+        // Set appropriate headers
+        res.setHeader('Content-Type', mime_type);
+        res.setHeader('Content-Disposition', `attachment; filename="${file_name}"`);
+        res.setHeader('Cache-Control', 'public, max-age=3600');
+
+        // Send the file data
+        res.send(file_data);
+    } catch (error) {
+        console.error('Error serving file:', error);
+        res.status(500).json({ message: 'Failed to serve file' });
+    }
+};
+
+// Delete article by id
+const deleteArticle = async (req, res) => {
+    const { id } = req.params;
+    try {
+        // Delete the article
+        const result = await db.query('DELETE FROM articles WHERE id = $1 RETURNING *', [id]);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'Article not found' });
+        }
+        res.json({ message: 'Article deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting article:', error);
+        res.status(500).json({ message: 'Failed to delete article' });
+    }
+};
+
 module.exports = {
     getPendingSubmissions,
     getPublishedArticles,
     approveArticle,
     rejectArticle,
     getArticleBySlug,
-    getArticlesByCategory
+    getArticlesByCategory,
+    getCategoryCounts,
+    clapArticle,
+    getFeaturedArticles,
+    serveFile,
+    deleteArticle
 }; 

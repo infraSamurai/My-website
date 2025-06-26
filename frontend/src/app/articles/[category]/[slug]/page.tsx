@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Mail, FileText, Calendar, User, Eye, Download } from 'lucide-react';
+import { ArrowLeft, Mail, FileText, Calendar, User, Eye, Download, Heart, MessageCircle, Share2 } from 'lucide-react';
+import ContactSection from '@/components/Home/ContactSection';
 
 interface Article {
   id: string;
@@ -13,14 +14,20 @@ interface Article {
   category: string;
   file_name: string;
   file_url: string;
+  mime_type: string;
   view_count: number;
+  claps: number;
   published_at: string;
+  pdf_file_name?: string;
+  pdf_mime_type?: string;
 }
 
 export default function ArticlePage({ params }: { params: { category: string; slug: string } }) {
   const [article, setArticle] = useState<Article | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [claps, setClaps] = useState(0);
+  const [hasClapped, setHasClapped] = useState(false);
 
   useEffect(() => {
     fetchArticle();
@@ -32,6 +39,7 @@ export default function ArticlePage({ params }: { params: { category: string; sl
       if (response.ok) {
         const data = await response.json();
         setArticle(data);
+        setClaps(data.claps || 0);
       } else {
         setError('Article not found');
       }
@@ -49,6 +57,36 @@ export default function ArticlePage({ params }: { params: { category: string; sl
       month: 'long',
       day: 'numeric'
     });
+  };
+
+  const handleClap = async () => {
+    if (!hasClapped && article) {
+      setHasClapped(true);
+      setClaps(prev => prev + 1);
+      
+      try {
+        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles/${article.id}/clap`, {
+          method: 'POST',
+        });
+      } catch (error) {
+        console.error('Error clapping article:', error);
+        // Optional: handle error, maybe revert optimistic update
+        setClaps(prev => prev - 1);
+        setHasClapped(false);
+      }
+    }
+  };
+
+  const handleShare = () => {
+    if (navigator.share) {
+      navigator.share({
+        title: article?.title,
+        url: window.location.href
+      });
+    } else {
+      navigator.clipboard.writeText(window.location.href);
+      // You could add a toast notification here
+    }
   };
 
   if (loading) {
@@ -100,9 +138,9 @@ export default function ArticlePage({ params }: { params: { category: string; sl
           Back to {article.category}
         </Link>
 
-        <article className="bg-brand-neutral-800/50 backdrop-blur-md rounded-2xl p-8 border border-brand-neutral-700">
+        <article className="bg-brand-neutral-800/50 backdrop-blur-md rounded-2xl border border-brand-neutral-700 overflow-hidden">
           {/* Article Header */}
-          <header className="mb-8">
+          <header className="p-8 border-b border-brand-neutral-700">
             <h1 className="text-4xl md:text-5xl font-bold text-brand-neutral-100 mb-6 leading-tight">
               {article.title}
             </h1>
@@ -122,55 +160,75 @@ export default function ArticlePage({ params }: { params: { category: string; sl
               </div>
             </div>
 
-            {article.file_name && (
-              <div className="flex items-center gap-2 text-brand-primary">
-                <FileText className="w-5 h-5" />
-                <span className="font-medium">{article.file_name}</span>
-                {article.file_url && (
+            {/* Reaction Bar */}
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={handleClap}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${
+                    hasClapped 
+                      ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
+                      : 'bg-brand-neutral-700 text-brand-neutral-300 hover:bg-brand-neutral-600 border border-brand-neutral-600'
+                  }`}
+                >
+                  <Heart className={`w-5 h-5 ${hasClapped ? 'fill-current' : ''}`} />
+                  <span>{claps}</span>
+                </button>
+                
+                <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-neutral-700 text-brand-neutral-300 hover:bg-brand-neutral-600 border border-brand-neutral-600 transition-colors">
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Comment</span>
+                </button>
+                
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-neutral-700 text-brand-neutral-300 hover:bg-brand-neutral-600 border border-brand-neutral-600 transition-colors"
+                >
+                  <Share2 className="w-5 h-5" />
+                  <span>Share</span>
+                </button>
+              </div>
+
+              {article.file_name && (
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-brand-primary" />
+                  <span className="text-sm text-brand-neutral-400">{article.file_name}</span>
                   <a
-                    href={article.file_url}
+                    href={`${process.env.NEXT_PUBLIC_API_URL}/api/admin/files/${article.id}`}
                     download
-                    className="flex items-center gap-1 text-sm hover:underline"
+                    className="flex items-center gap-1 text-sm hover:underline bg-brand-neutral-700 text-brand-neutral-300 px-2 py-1 rounded hover:bg-brand-neutral-600 transition-colors"
                   >
-                    <Download className="w-4 h-4" />
+                    <Download className="w-3 h-3" />
                     Download
                   </a>
-                )}
-              </div>
-            )}
+                </div>
+              )}
+            </div>
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert max-w-none">
-            {article.content ? (
-              <div className="text-brand-neutral-300 leading-relaxed text-lg whitespace-pre-line">
-                {article.content}
-              </div>
-            ) : (
-              <div className="text-center py-12">
-                <FileText className="w-16 h-16 text-brand-neutral-600 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-brand-neutral-300 mb-2">
-                  Article Content
-                </h3>
-                <p className="text-brand-neutral-400 mb-4">
-                  This article is available as a downloadable file.
-                </p>
-                {article.file_url && (
-                  <a
-                    href={article.file_url}
-                    download
-                    className="inline-flex items-center gap-2 bg-brand-primary text-white px-6 py-3 rounded-full font-medium hover:bg-brand-secondary transition-colors"
-                  >
-                    <Download className="w-5 h-5" />
-                    Download Article
-                  </a>
-                )}
+          <div className="prose prose-invert max-w-none p-8">
+            {/* Render the HTML content from the editor */}
+            {article.content && (
+              <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            )}
+            {/* Show attachment download button if file exists */}
+            {article.file_name && (
+              <div className="mt-8 flex flex-col items-center">
+                <a
+                  href={`${process.env.NEXT_PUBLIC_API_URL}/api/admin/files/${article.id}`}
+                  download
+                  className="inline-flex items-center gap-2 bg-brand-primary text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-secondary transition-colors"
+                >
+                  <Download className="w-6 h-6" />
+                  Download Attachment ({article.file_name})
+                </a>
               </div>
             )}
           </div>
 
           {/* Article Footer */}
-          <footer className="mt-12 pt-8 border-t border-brand-neutral-700">
+          <footer className="p-8 border-t border-brand-neutral-700">
             <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
               <div className="text-brand-neutral-400">
                 <p>Written by <span className="text-brand-neutral-300 font-medium">{article.author_name}</span></p>
@@ -197,6 +255,7 @@ export default function ArticlePage({ params }: { params: { category: string; sl
           </footer>
         </article>
       </div>
+      <ContactSection />
     </div>
   );
-} 
+}

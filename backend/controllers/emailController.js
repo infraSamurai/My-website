@@ -2,6 +2,9 @@ const nodemailer = require('nodemailer');
 const multer = require('multer');
 const upload = multer();
 const db = require('../config/db');
+const libre = require('libreoffice-convert');
+const { promisify } = require('util');
+const convertAsync = promisify(libre.convert);
 
 // Create transporter with more robust Gmail configuration
 const transporter = nodemailer.createTransport({
@@ -124,7 +127,6 @@ const sendContactEmail = async (req, res) => {
 };
 
 const sendArticleSubmission = async (req, res) => {
-  // For multipart/form-data, use multer to parse
   upload.single('file')(req, res, async function (err) {
     if (err) {
       return res.status(400).json({ message: 'File upload error' });
@@ -140,8 +142,8 @@ const sendArticleSubmission = async (req, res) => {
     try {
       // Save to database
       const query = `
-        INSERT INTO article_submissions (title, content, author_name, author_email, category, file_name, file_size, mime_type)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        INSERT INTO article_submissions (title, content, author_name, author_email, category, file_name, file_size, mime_type, file_data)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
         RETURNING id
       `;
       
@@ -153,7 +155,8 @@ const sendArticleSubmission = async (req, res) => {
         category,
         file ? file.originalname : null,
         file ? file.size : null,
-        file ? file.mimetype : null
+        file ? file.mimetype : null,
+        file ? file.buffer : null
       ];
       
       const result = await db.query(query, values);

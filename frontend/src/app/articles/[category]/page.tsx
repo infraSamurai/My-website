@@ -2,38 +2,21 @@
 import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Mail, UploadCloud, FileText, Calendar, User, Eye } from 'lucide-react';
+import RichTextEditor from '@/components/RichTextEditor';
 
 const categoryData = {
-  'hindi-literature': {
-    title: 'Hindi Literature',
-    description: 'कहानियाँ, कविताएँ और साहित्यिक रचनाएँ',
-    color: 'from-orange-500 to-red-500'
-  },
-  'english-literature': {
-    title: 'English Literature',
-    description: 'Stories, poems and literary works',
-    color: 'from-blue-500 to-purple-500'
-  },
-  'technology': {
-    title: 'Technology',
-    description: 'Latest tech trends and innovations',
-    color: 'from-green-500 to-blue-500'
-  },
-  'science': {
-    title: 'Science',
-    description: 'Scientific discoveries and research',
-    color: 'from-yellow-500 to-orange-500'
-  },
-  'psychology': {
-    title: 'Psychology',
-    description: 'Mental health and human behavior',
-    color: 'from-pink-500 to-purple-500'
-  },
-  'philosophy': {
-    title: 'Philosophy',
-    description: 'Deep thoughts and life wisdom',
-    color: 'from-red-500 to-pink-500'
-  }
+  'english-literature': { title: 'English Literature', description: 'Stories, poems, and literary analysis.', color: 'from-blue-500 to-purple-500' },
+  'hindi-literature': { title: 'Hindi Literature', description: 'कहानियाँ, कविताएँ और साहित्यिक रचनाएँ।', color: 'from-orange-500 to-red-500' },
+  'mathematics': { title: 'Mathematics', description: 'Concepts, puzzles, and the beauty of numbers.', color: 'from-cyan-500 to-blue-500' },
+  'science-technology': { title: 'Science & Technology', description: 'Latest in discovery, tech, and computer science.', color: 'from-green-500 to-teal-500' },
+  'history-civics': { title: 'History & Civics', description: 'Exploring history, geography, and civics.', color: 'from-amber-500 to-orange-500' },
+  'philosophy': { title: 'Philosophy', description: "Deep thoughts on life's big questions.", color: 'from-indigo-500 to-purple-500' },
+  'visual-arts': { title: 'Visual Arts', description: 'Showcasing student paintings, drawings, and art.', color: 'from-pink-500 to-rose-500' },
+  'performing-arts': { title: 'Performing Arts', description: 'Drama, music concerts, and dance performances.', color: 'from-red-500 to-pink-500' },
+  'creative-writing': { title: 'Creative Writing', description: 'A home for original student poetry and stories.', color: 'from-teal-500 to-cyan-500' },
+  'sports-athletics': { title: 'Sports & Athletics', description: 'Match reports, team updates, and athlete spotlights.', color: 'from-lime-500 to-green-500' },
+  'clubs-activities': { title: 'Clubs & Activities', description: 'News and events from school clubs and societies.', color: 'from-fuchsia-500 to-purple-500' },
+  'student-achievements': { title: 'Student Achievements', description: 'Celebrating academic and extracurricular success.', color: 'from-yellow-500 to-amber-500' },
 };
 
 interface Article {
@@ -46,6 +29,15 @@ interface Article {
   file_name: string;
   view_count: number;
   published_at: string;
+}
+
+// Utility to strip HTML tags and get a summary
+function getExcerpt(html: string, wordLimit = 40) {
+  if (!html) return '';
+  const text = html.replace(/<[^>]+>/g, ' ');
+  const words = text.replace(/\s+/g, ' ').trim().split(' ');
+  if (words.length <= wordLimit) return words.join(' ');
+  return words.slice(0, wordLimit).join(' ') + '...';
 }
 
 export default function CategoryPage({ params }: { params: { category: string } }) {
@@ -178,7 +170,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
                   </h3>
                   {article.content && (
                     <p className="text-brand-neutral-300 mb-4 line-clamp-3">
-                      {article.content}
+                      {getExcerpt(article.content)}
                     </p>
                   )}
                   <div className="flex items-center justify-between text-sm text-brand-neutral-400">
@@ -209,29 +201,34 @@ export default function CategoryPage({ params }: { params: { category: string } 
       )}
 
       {/* Article Submission Form */}
-      <section className="py-8 relative z-20">
-        <div className="container mx-auto px-4 max-w-2xl">
-          <div className="bg-brand-neutral-800/50 backdrop-blur-md rounded-2xl p-8 border border-brand-neutral-700">
-            <h2 className="text-2xl font-bold text-brand-neutral-100 mb-4">Submit Your Article</h2>
-            <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                required
-                value={form.name}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400"
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                required
-                value={form.email}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400"
-              />
+      <section className="py-16 relative z-20">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <div className="bg-brand-neutral-800/50 backdrop-blur-md rounded-3xl p-12 border border-brand-neutral-700">
+            <h2 className="text-3xl font-bold text-brand-neutral-100 mb-8 text-center">Submit Your Article</h2>
+            <p className="text-brand-neutral-400 text-center mb-8 max-w-2xl mx-auto">
+              Share your knowledge and insights with our community. Use the rich text editor below to create beautifully formatted articles with headings, lists, code blocks, and more.
+            </p>
+            <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Your Name"
+                  required
+                  value={form.name}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400 text-lg"
+                />
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Your Email"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                  className="w-full px-6 py-4 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400 text-lg"
+                />
+              </div>
               <input
                 type="text"
                 name="title"
@@ -239,38 +236,40 @@ export default function CategoryPage({ params }: { params: { category: string } 
                 required
                 value={form.title}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400"
+                className="w-full px-6 py-4 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400 text-lg"
               />
-              <textarea
-                name="content"
-                placeholder="Article Content (or a short summary if uploading a file)"
-                rows={6}
-                required={!form.file}
+              <RichTextEditor
                 value={form.content}
-                onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors resize-none text-brand-neutral-100 placeholder-brand-neutral-400"
-              ></textarea>
-              <label className="flex items-center gap-3 cursor-pointer">
-                <UploadCloud className="w-5 h-5 text-brand-primary" />
-                <span className="text-brand-neutral-300">Attach a file (optional)</span>
-                <input
-                  type="file"
-                  name="file"
-                  accept=".pdf,.doc,.docx,.txt,.jpg,.png"
-                  className="hidden"
-                  onChange={handleFileChange}
-                />
-                {form.file && <span className="text-brand-primary ml-2">{form.file.name}</span>}
-              </label>
+                onChange={(value) => setForm(prev => ({ ...prev, content: value }))}
+                placeholder="Write your article content here... Use the toolbar above for formatting options like headings, bold, italic, lists, code blocks, and more!"
+                className="w-full"
+              />
+              <div className="bg-brand-neutral-900/30 rounded-xl p-6 border border-brand-neutral-600">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <UploadCloud className="w-6 h-6 text-brand-primary" />
+                  <span className="text-brand-neutral-300 text-lg">Attach a file (optional)</span>
+                  <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.doc,.docx,.txt,.jpg,.png"
+                    className="hidden"
+                    onChange={handleFileChange}
+                  />
+                  {form.file && <span className="text-brand-primary ml-2 text-lg">{form.file.name}</span>}
+                </label>
+                <p className="text-brand-neutral-400 text-sm mt-2 ml-9">
+                  Supported formats: PDF, DOC, DOCX, TXT, JPG, PNG
+                </p>
+              </div>
               <button
                 type="submit"
                 disabled={status === 'sending'}
-                className="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-[1.02] disabled:bg-brand-neutral-600 disabled:cursor-not-allowed"
+                className="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-4 rounded-xl font-bold text-lg hover:shadow-lg transition-all duration-300 hover:scale-[1.02] disabled:bg-brand-neutral-600 disabled:cursor-not-allowed"
               >
                 {status === 'sending' ? 'Submitting...' : 'Submit Article'}
               </button>
-              {status === 'success' && <p className="text-green-400 text-center">Thank you! Your article has been submitted.</p>}
-              {status === 'error' && <p className="text-red-400 text-center">Something went wrong. Please try again.</p>}
+              {status === 'success' && <p className="text-green-400 text-center text-lg">Thank you! Your article has been submitted.</p>}
+              {status === 'error' && <p className="text-red-400 text-center text-lg">Something went wrong. Please try again.</p>}
             </form>
           </div>
         </div>

@@ -35,11 +35,7 @@ services:
     depends_on:
       - db
     environment:
-      - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USER=postgres
-      - DB_PASSWORD=yourpassword
-      - DB_DATABASE=school_db
+      - DATABASE_URL=postgresql://postgres:yourpassword@db:5432/school_db
       - EMAIL_USER=devansh.prakhar@gmail.com
       - EMAIL_PASS=nnvgucdgchkafrsv
       - CORS_ORIGIN=http://localhost:3000

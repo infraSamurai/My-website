@@ -1,32 +1,37 @@
-# 1. Base Image: Use the official Node.js image.
-# Using a specific version is good practice for reproducibility.
-FROM node:20-alpine
+# --- 1. Build Stage ---
+# This stage installs dependencies and builds the Next.js application.
+FROM node:20-alpine AS builder
 
-# 2. Set Working Directory: Define the working directory inside the container.
 WORKDIR /app/frontend
 
-# 3. Copy package.json and package-lock.json first.
-# This leverages Docker's layer caching. These files don't change often,
-# so this layer won't be rebuilt unless dependencies change.
+# Copy package files and install all dependencies (including devDependencies for build)
 COPY package*.json ./
+RUN npm install
 
-# 4. Install Dependencies: Install all npm dependencies.
-# Use --ci for production builds to ensure a clean, consistent install from package-lock.json.
-RUN npm ci
-
-# 5. Copy Application Code: Copy the rest of your Next.js application code.
+# Copy the rest of the application code
 COPY . .
 
-# 6. Build the Application: Build the Next.js app for production.
+# Build the application
 RUN npm run build
 
-# 7. Expose Port: Expose the port the Next.js app runs on.
-EXPOSE 3000
+# --- 2. Production Stage ---
+# This stage creates the final, lean image for production.
+FROM node:20-alpine
 
-# 8. Set Environment Variable for Hostname
-# This is important for Next.js in a Docker container to be accessible from outside.
+WORKDIR /app/frontend
+
+# Set the environment to production
+ENV NODE_ENV production
 ENV HOSTNAME 0.0.0.0
 
-# 9. Start Command: The command to run the application.
-# This uses the 'start' script from your package.json.
-CMD [ "npm", "start" ] 
+# Copy only the necessary files from the builder stage
+COPY --from=builder /app/frontend/public ./public
+COPY --from=builder /app/frontend/.next ./.next
+COPY --from=builder /app/frontend/node_modules ./node_modules
+COPY --from=builder /app/frontend/package.json ./package.json
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# The command to run the application
+CMD ["npm", "start"] 

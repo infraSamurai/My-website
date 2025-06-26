@@ -237,6 +237,10 @@ CREATE TABLE article_submissions (
     file_url VARCHAR(500),
     file_size INTEGER,
     mime_type VARCHAR(100),
+    file_data BYTEA,
+    pdf_file_data BYTEA,
+    pdf_file_name VARCHAR(255),
+    pdf_mime_type VARCHAR(100),
     status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
     admin_notes TEXT,
     reviewed_by UUID REFERENCES users(id),
@@ -245,21 +249,22 @@ CREATE TABLE article_submissions (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Articles table (for published articles)
+-- Published articles table
 CREATE TABLE articles (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    submission_id UUID REFERENCES article_submissions(id),
+    submission_id UUID UNIQUE REFERENCES article_submissions(id),
     title VARCHAR(200) NOT NULL,
-    slug VARCHAR(200) UNIQUE NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
     content TEXT,
     author_name VARCHAR(100) NOT NULL,
     author_email VARCHAR(255) NOT NULL,
     category VARCHAR(50) NOT NULL,
     file_name VARCHAR(255),
-    file_url VARCHAR(500),
     file_size INTEGER,
     mime_type VARCHAR(100),
+    file_data BYTEA,
     view_count INTEGER DEFAULT 0,
+    claps INTEGER DEFAULT 0,
     is_featured BOOLEAN DEFAULT false,
     published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -346,6 +351,9 @@ CREATE INDEX idx_fee_payments_status ON fee_payments(payment_status);
 CREATE INDEX idx_contact_submissions_status ON contact_submissions(status);
 CREATE INDEX idx_notifications_user_id ON notifications(user_id);
 CREATE INDEX idx_notifications_read ON notifications(is_read);
+CREATE INDEX idx_articles_slug ON articles(slug);
+CREATE INDEX idx_articles_category ON articles(category);
+CREATE INDEX idx_articles_claps ON articles(claps DESC);
 
 -- Insert default data
 INSERT INTO grades (grade_name, grade_level, min_age_years, max_age_years, total_seats, available_seats, annual_fee, admission_fee) VALUES

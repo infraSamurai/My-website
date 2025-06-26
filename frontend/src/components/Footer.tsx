@@ -9,12 +9,12 @@ const socialLinks = [
 ];
 
 const quickLinks = [
-  { href: '#about', label: 'About Us' },
-  { href: '#admissions', label: 'Admissions' },
-  { href: '#academics', label: 'Academics' },
-  { href: '#gallery', label: 'Gallery' },
+  { href: '/#about', label: 'About Us' },
+  { href: '/#admissions', label: 'Admissions' },
+  { href: '/#academics', label: 'Academics' },
+  { href: '/#gallery', label: 'Gallery' },
   { href: '/blog', label: 'Blog' },
-  { href: '#contact', label: 'Contact' },
+  { href: '/#contact', label: 'Contact' },
 ];
 
 export default function Footer() {

@@ -1,3 +1,5 @@
+"use client";
+import { useEffect } from 'react';
 import HeroSection from '../components/Home/HeroSection';
 import StatsSection from '../components/Home/StatsSection';
 import AboutSection from '../components/Home/AboutSection';
@@ -19,6 +21,16 @@ const PlaceholderSection = ({ id, title, children }: { id: string, title: string
 
 
 export default function HomePage() {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const el = document.getElementById(window.location.hash.substring(1));
+      if (el) {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth' });
+        }, 100); // Wait for DOM to paint
+      }
+    }
+  }, []);
   return (
     <>
       <HeroSection />
