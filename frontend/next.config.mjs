@@ -1,14 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    let backendUrl;
-    if (process.env.BACKEND_URL) {
-      backendUrl = process.env.BACKEND_URL;
-      console.log('✅ BACKEND_URL env var found:', backendUrl);
-    } else {
-      backendUrl = 'http://localhost:5001';
-      console.log('⚠️  BACKEND_URL env var not found, using localhost development env:', backendUrl);
-    }
+    // Hardcoded for production deployment
+    const backendUrl = process.env.NODE_ENV === 'production'
+      ? 'https://my-website-9h1q.onrender.com'
+      : 'http://localhost:5001';
+    console.log('🔵 Using backendUrl:', backendUrl);
     return [
       {
         source: '/api/:path*',
