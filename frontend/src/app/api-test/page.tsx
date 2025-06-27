@@ -2,6 +2,36 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 
+const healthChecks = [
+  { name: 'Contact Email', endpoint: '/api/send-contact-email' },
+  { name: 'Admission Email', endpoint: '/api/send-admission-email' },
+  { name: 'Article Submission', endpoint: '/api/send-article-submission' },
+];
+
+function HealthCheck({ endpoint, name }: { endpoint: string; name: string }) {
+  const [status, setStatus] = useState<string>('');
+  const [response, setResponse] = useState<string>('');
+
+  useEffect(() => {
+    fetch(endpoint, { method: 'OPTIONS' })
+      .then(async (res) => {
+        setStatus(res.status + ' ' + res.statusText);
+        setResponse(await res.text());
+      })
+      .catch((err) => {
+        setStatus('Error');
+        setResponse(String(err));
+      });
+  }, [endpoint]);
+
+  return (
+    <div style={{ marginBottom: 12 }}>
+      <strong>{name} ({endpoint}):</strong> <span>{status}</span>
+      <pre style={{ background: '#f5f5f5', padding: 8, borderRadius: 4 }}>{response}</pre>
+    </div>
+  );
+}
+
 export default function ApiTestPage() {
   const [result, setResult] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -45,6 +75,10 @@ export default function ApiTestPage() {
       {error && (
         <pre className="bg-red-100 p-4 rounded text-red-800 overflow-x-auto">Error: {error}</pre>
       )}
+      <h2>API Health Checks</h2>
+      {healthChecks.map((hc) => (
+        <HealthCheck key={hc.endpoint} {...hc} />
+      ))}
     </div>
   );
 } 

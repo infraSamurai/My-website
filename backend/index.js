@@ -70,6 +70,14 @@ app.use((req, res) => {
 // --- Server Initialization ---
 const PORT = process.env.PORT || 5000;
 
+console.log('🔧 BACKEND ENV CHECK:');
+console.log('EMAIL_USER:', process.env.EMAIL_USER ? '[SET]' : '[NOT SET]');
+console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? '[SET]' : '[NOT SET]');
+console.log('DATABASE_URL:', process.env.DATABASE_URL ? '[SET]' : '[NOT SET]');
+console.log('CORS_ORIGIN:', process.env.CORS_ORIGIN ? '[SET]' : '[NOT SET]');
+console.log('PORT:', process.env.PORT ? process.env.PORT : '[NOT SET]');
+console.log('FRONTEND_URL:', process.env.FRONTEND_URL ? process.env.FRONTEND_URL : '[NOT SET]');
+
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server is running on port ${PORT}`);
 });
