@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Mail, FileText, Calendar, User, Eye, Download, Heart, MessageCircle, Share2 } from 'lucide-react';
 import ContactSection from '@/components/Home/ContactSection';
+import { api } from '@/lib/api';
 
 interface Article {
   id: string;
@@ -35,14 +36,9 @@ export default function ArticlePage({ params }: { params: { category: string; sl
 
   const fetchArticle = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles/${params.slug}`);
-      if (response.ok) {
-        const data = await response.json();
-        setArticle(data);
-        setClaps(data.claps || 0);
-      } else {
-        setError('Article not found');
-      }
+      const data = await api.articles.getBySlug(params.slug);
+      setArticle(data);
+      setClaps(data.claps || 0);
     } catch (error) {
       console.error('Error fetching article:', error);
       setError('Failed to load article');
@@ -65,9 +61,7 @@ export default function ArticlePage({ params }: { params: { category: string; sl
       setClaps(prev => prev + 1);
       
       try {
-        await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles/${article.id}/clap`, {
-          method: 'POST',
-        });
+        await api.articles.clap(article.id);
       } catch (error) {
         console.error('Error clapping article:', error);
         // Optional: handle error, maybe revert optimistic update
@@ -194,11 +188,11 @@ export default function ArticlePage({ params }: { params: { category: string; sl
                   <FileText className="w-4 h-4 text-brand-primary" />
                   <span className="text-sm text-brand-neutral-400">{article.file_name}</span>
                   <a
-                    href={`${process.env.NEXT_PUBLIC_API_URL}/api/admin/files/${article.id}`}
+                    href={`/api/admin/files/${article.id}`}
                     download
                     className="flex items-center gap-1 text-sm hover:underline bg-brand-neutral-700 text-brand-neutral-300 px-2 py-1 rounded hover:bg-brand-neutral-600 transition-colors"
                   >
-                    <Download className="w-3 h-3" />
+                    <Download className="w-4 h-4" />
                     Download
                   </a>
                 </div>
@@ -207,55 +201,64 @@ export default function ArticlePage({ params }: { params: { category: string; sl
           </header>
 
           {/* Article Content */}
-          <div className="prose prose-invert max-w-none p-8">
-            {/* Render the HTML content from the editor */}
-            {article.content && (
-              <div dangerouslySetInnerHTML={{ __html: article.content }} />
-            )}
-            {/* Show attachment download button if file exists */}
-            {article.file_name && (
-              <div className="mt-8 flex flex-col items-center">
-                <a
-                  href={`${process.env.NEXT_PUBLIC_API_URL}/api/admin/files/${article.id}`}
-                  download
-                  className="inline-flex items-center gap-2 bg-brand-primary text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-brand-secondary transition-colors"
-                >
-                  <Download className="w-6 h-6" />
-                  Download Attachment ({article.file_name})
-                </a>
-              </div>
-            )}
+          <div className="p-8">
+            <div 
+              className="prose prose-invert prose-lg max-w-none"
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
           </div>
 
           {/* Article Footer */}
           <footer className="p-8 border-t border-brand-neutral-700">
-            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-              <div className="text-brand-neutral-400">
-                <p>Written by <span className="text-brand-neutral-300 font-medium">{article.author_name}</span></p>
-                <p>Published in <span className="text-brand-neutral-300 font-medium">{article.category}</span></p>
-              </div>
-              
-              <div className="flex gap-4">
-                <a
-                  href={`mailto:${article.author_email}?subject=Re: ${article.title}`}
-                  className="flex items-center gap-2 text-brand-neutral-400 hover:text-brand-primary transition-colors"
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <button
+                  onClick={handleClap}
+                  className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-200 ${
+                    hasClapped 
+                      ? 'bg-red-500/20 text-red-400 border border-red-500/30' 
+                      : 'bg-brand-neutral-700 text-brand-neutral-300 hover:bg-brand-neutral-600 border border-brand-neutral-600'
+                  }`}
                 >
-                  <Mail className="w-4 h-4" />
-                  Contact Author
-                </a>
-                <a
-                  href={`mailto:devansh.prakhar@gmail.com?subject=Article Submission`}
-                  className="flex items-center gap-2 text-brand-neutral-400 hover:text-brand-primary transition-colors"
+                  <Heart className={`w-5 h-5 ${hasClapped ? 'fill-current' : ''}`} />
+                  <span>{claps}</span>
+                </button>
+                
+                <button className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-neutral-700 text-brand-neutral-300 hover:bg-brand-neutral-600 border border-brand-neutral-600 transition-colors">
+                  <MessageCircle className="w-5 h-5" />
+                  <span>Comment</span>
+                </button>
+                
+                <button
+                  onClick={handleShare}
+                  className="flex items-center gap-2 px-4 py-2 rounded-full bg-brand-neutral-700 text-brand-neutral-300 hover:bg-brand-neutral-600 border border-brand-neutral-600 transition-colors"
                 >
-                  <Mail className="w-4 h-4" />
-                  Submit Your Article
-                </a>
+                  <Share2 className="w-5 h-5" />
+                  <span>Share</span>
+                </button>
               </div>
+
+              {article.file_name && (
+                <div className="flex items-center gap-2">
+                  <FileText className="w-4 h-4 text-brand-primary" />
+                  <span className="text-sm text-brand-neutral-400">{article.file_name}</span>
+                  <a
+                    href={`/api/admin/files/${article.id}`}
+                    download
+                    className="flex items-center gap-1 text-sm hover:underline bg-brand-neutral-700 text-brand-neutral-300 px-2 py-1 rounded hover:bg-brand-neutral-600 transition-colors"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download
+                  </a>
+                </div>
+              )}
             </div>
           </footer>
         </article>
+
+        {/* Contact Section */}
+        <ContactSection />
       </div>
-      <ContactSection />
     </div>
   );
 }

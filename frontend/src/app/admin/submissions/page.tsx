@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, FileText, Calendar, User, Tag, Eye } from 'lucide-react';
+import { api } from '@/lib/api';
 
 interface Submission {
   id: string;
@@ -32,9 +33,8 @@ export default function PendingSubmissions() {
 
   const fetchSubmissions = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/submissions/pending`);
-      const data = await response.json();
-      setSubmissions(data);
+      const pendingSubmissions = await api.admin.getPendingSubmissions();
+      setSubmissions(pendingSubmissions);
     } catch (error) {
       console.error('Error fetching submissions:', error);
     } finally {
@@ -47,14 +47,12 @@ export default function PendingSubmissions() {
 
     setProcessing(true);
     try {
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/admin/submissions/${selectedSubmission.id}/${action}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ adminNotes: notes })
-        }
-      );
+      const endpoint = `/api/admin/submissions/${selectedSubmission.id}/${action}`;
+      const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ adminNotes: notes })
+      });
 
       if (response.ok) {
         setShowModal(false);

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { FileText, CheckCircle, XCircle, Eye } from 'lucide-react';
+import { api } from '@/lib/api';
 
 interface DashboardStats {
   pendingSubmissions: number;
@@ -19,18 +20,13 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchStats = async () => {
       try {
-        const [submissionsRes, articlesRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/submissions/pending`),
-          fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles`)
-        ]);
-
-        const submissions = await submissionsRes.json();
-        const articles = await articlesRes.json();
+        const pendingSubmissions = await api.admin.getPendingSubmissions();
+        const articles = await api.articles.getAll();
 
         const totalViews = articles.reduce((sum: number, article: any) => sum + (article.view_count || 0), 0);
 
         setStats({
-          pendingSubmissions: submissions.length,
+          pendingSubmissions: pendingSubmissions.length,
           publishedArticles: articles.length,
           totalViews
         });

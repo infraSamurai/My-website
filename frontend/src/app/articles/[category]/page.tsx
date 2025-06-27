@@ -3,6 +3,7 @@ import { useState, ChangeEvent, FormEvent, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Mail, UploadCloud, FileText, Calendar, User, Eye } from 'lucide-react';
 import RichTextEditor from '@/components/RichTextEditor';
+import { api } from '@/lib/api';
 
 const categoryData = {
   'english-literature': { title: 'English Literature', description: 'Stories, poems, and literary analysis.', color: 'from-blue-500 to-purple-500' },
@@ -60,8 +61,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
   const fetchArticles = async () => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles/category/${category.title}`);
-      const data = await response.json();
+      const data = await api.articles.getByCategory(category.title);
       setArticles(data);
     } catch (error) {
       console.error('Error fetching articles:', error);
@@ -93,16 +93,9 @@ export default function CategoryPage({ params }: { params: { category: string } 
     if (form.file) formData.append('file', form.file);
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/send-article-submission`, {
-        method: 'POST',
-        body: formData,
-      });
-      if (response.ok) {
-        setStatus('success');
-        setForm({ name: '', email: '', title: '', content: '', file: null });
-      } else {
-        setStatus('error');
-      }
+      await api.articles.submit(formData);
+      setStatus('success');
+      setForm({ name: '', email: '', title: '', content: '', file: null });
     } catch {
       setStatus('error');
     }

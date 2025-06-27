@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { FileText, Trash2, Eye } from 'lucide-react';
+import { api } from '@/lib/api';
 
 interface Article {
   id: string;
@@ -24,9 +25,8 @@ export default function AdminPublishedArticles() {
   const fetchArticles = async () => {
     setLoading(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles`);
-      const data = await res.json();
-      setArticles(data);
+      const articles = await api.articles.getAll();
+      setArticles(articles);
     } catch (err) {
       setArticles([]);
     } finally {
@@ -38,14 +38,8 @@ export default function AdminPublishedArticles() {
     if (!confirm('Are you sure you want to delete this article?')) return;
     setDeletingId(id);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles/${id}`, {
-        method: 'DELETE',
-      });
-      if (res.ok) {
-        setArticles((prev) => prev.filter((a) => a.id !== id));
-      } else {
-        alert('Failed to delete article');
-      }
+      await api.articles.delete(id);
+      setArticles((prev) => prev.filter((a) => a.id !== id));
     } catch (err) {
       alert('Failed to delete article');
     } finally {

@@ -5,6 +5,7 @@ import {
   BookOpen, Heart, Zap, Globe, Brain, Lightbulb, Mail, ArrowRight,
   Calculator, Landmark, Palette, Mic, Feather, Trophy, Dumbbell, Users
 } from 'lucide-react';
+import { api } from '@/lib/api';
 
 interface CategoryStyle {
   id: string;
@@ -81,10 +82,9 @@ export default function ArticlesPage() {
   useEffect(() => {
     const fetchAndMergeCategories = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/categories/counts`);
-        const countsData: CategoryCount[] = await response.json();
+        const categoryCounts = await api.articles.getCategoryCounts();
         
-        const countsMap = new Map(countsData.map(item => [item.category, item.article_count]));
+        const countsMap = new Map((categoryCounts as any[]).map((item: any) => [item.category, item.article_count]));
         
         const mergedGroups = mainlineCategoryGroups.map(group => ({
           ...group,
@@ -109,9 +109,8 @@ export default function ArticlesPage() {
 
     const fetchFeaturedArticles = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/admin/articles/featured`);
-        const data = await response.json();
-        setFeaturedArticles(data);
+        const featuredArticles = await api.articles.getFeatured();
+        setFeaturedArticles(featuredArticles);
       } catch (error) {
         console.error('Error fetching featured articles:', error);
       }

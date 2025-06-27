@@ -35,28 +35,22 @@ export default function ApiTestPage() {
   
   const runTests = async () => {
     setResults([]);
-    
-    // Test various API configurations
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const tests = [
-      { name: 'Environment Variable', url: apiUrl ? `${apiUrl}/api` : 'NOT SET' },
       { name: 'Relative Path', url: '/api' },
-      { name: 'Window Origin', url: typeof window !== 'undefined' ? `${window.location.origin}/api` : 'SSR' },
-      { name: 'Direct Backend (if known)', url: 'https://my-website-9h1q.onrender.com/api' }
+      { name: 'Window Origin', url: typeof window !== 'undefined' ? `${window.location.origin}/api` : 'SSR' }
     ];
-    
     for (const test of tests) {
-      if (test.url !== 'NOT SET' && test.url !== 'SSR') {
+      if (test.url !== 'SSR') {
         await testEndpoint(test.name, test.url);
       } else {
         setResults(prev => [...prev, {
           name: test.name,
           url: test.url,
           status: 'N/A',
-          statusText: 'Environment variable not configured',
+          statusText: 'Not available during SSR',
           time: 0,
           success: false,
-          data: 'NEXT_PUBLIC_API_URL is not set'
+          data: 'window.location is not available during SSR'
         }]);
       }
     }
@@ -71,7 +65,6 @@ export default function ApiTestPage() {
           <h2 className="text-xl font-semibold text-white mb-4">Environment Info</h2>
           <div className="space-y-2 text-brand-neutral-300">
             <p>NODE_ENV: <code className="bg-brand-neutral-700 px-2 py-1 rounded">{process.env.NODE_ENV}</code></p>
-            <p>NEXT_PUBLIC_API_URL: <code className="bg-brand-neutral-700 px-2 py-1 rounded">{process.env.NEXT_PUBLIC_API_URL || 'NOT SET'}</code></p>
             <p>Window Origin: <code className="bg-brand-neutral-700 px-2 py-1 rounded">{typeof window !== 'undefined' ? window.location.origin : 'SSR'}</code></p>
           </div>
         </div>

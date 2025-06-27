@@ -2,7 +2,6 @@
 import { useState } from 'react';
 
 export default function VisitForm() {
-  console.log('process.env.NEXT_PUBLIC_API_URL (VisitForm):', process.env.NEXT_PUBLIC_API_URL);
   const [formData, setFormData] = useState({
     parentName: '',
     parentEmail: '',
