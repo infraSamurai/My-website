@@ -1,8 +1,10 @@
 "use client";
 import { useEffect, useState } from 'react';
-import AnimatedGradient from './AnimatedGradient';
-import ParticleField from './ParticleField';
-import GeometricGrid from './GeometricGrid';
+import dynamic from 'next/dynamic';
+
+const AnimatedGradient = dynamic(() => import('./AnimatedGradient'), { ssr: false });
+const ParticleField = dynamic(() => import('./ParticleField'), { ssr: false });
+const GeometricGrid = dynamic(() => import('./GeometricGrid'), { ssr: false });
 
 type BackgroundType = 'gradient' | 'particles' | 'grid' | 'combined';
 

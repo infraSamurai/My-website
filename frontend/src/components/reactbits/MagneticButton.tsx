@@ -59,10 +59,10 @@ export default function MagneticButton({
   };
 
   const variantClasses = {
-    primary: 'bg-gradient-primary text-white hover:shadow-glow',
-    secondary: 'bg-gradient-secondary text-white hover:shadow-glow',
-    ghost: 'bg-transparent border-2 border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white',
-    outline: 'bg-transparent border-2 border-brand-neutral-300 text-brand-neutral-300 hover:bg-brand-neutral-300 hover:text-brand-neutral-900'
+    primary: 'bg-nature-accent text-white hover:shadow-lg',
+    secondary: 'bg-nature-secondary text-white hover:shadow-lg',
+    ghost: 'bg-transparent border-2 border-nature-accent text-nature-accent hover:bg-nature-accent hover:text-white',
+    outline: 'bg-transparent border-2 border-nature-secondary text-nature-secondary hover:bg-nature-secondary hover:text-white'
   };
 
   const sizeClasses = {
