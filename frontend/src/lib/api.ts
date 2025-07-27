@@ -10,7 +10,7 @@ const API_ENDPOINTS = {
   featuredArticles: '/api/admin/articles/featured',
   categoryCounts: '/api/admin/categories/counts',
   // Dynamic endpoints
-  articleBySlug: (slug: string) => `/api/admin/articles/${slug}`,
+  articleBySlug: (slug: string) => `/api/admin/articles/by-slug/${slug}`,
   articlesByCategory: (category: string) => `/api/admin/articles/category/${category}`,
   approveSubmission: (id: string) => `/api/admin/submissions/${id}/approve`,
   rejectSubmission: (id: string) => `/api/admin/submissions/${id}/reject`,
