@@ -2,7 +2,6 @@
 import { Heart, Palette, Book, Smile } from 'lucide-react';
 import { useState } from 'react';
 import Modal from '../Modal';
-import { ThemeAwareBackground } from '../backgrounds';
 import { motion } from 'framer-motion';
 import dynamic from 'next/dynamic';
 import ClientOnly from '../ClientOnly';
@@ -12,6 +11,7 @@ const SplitText = dynamic(() => import('../reactbits/SplitText'), { ssr: false }
 const GlassCard = dynamic(() => import('../reactbits/GlassCard'), { ssr: false });
 const MagneticButton = dynamic(() => import('../reactbits/MagneticButton'), { ssr: false });
 const ClickSpark = dynamic(() => import('../reactbits/ClickSpark'), { ssr: false });
+const ThemeAwareBackground = dynamic(() => import('../backgrounds/ThemeAwareBackground'), { ssr: false });
 
 const highlights = [
   { icon: Heart, title: 'Caring Environment', desc: 'Where every child feels loved' },
@@ -44,9 +44,17 @@ export default function AboutSection() {
 
   return (
     <>
-      <section className="py-20 bg-nature-primary/5 dark:bg-nature-primary/10 relative overflow-hidden">
-        <ThemeAwareBackground type="particles" intensity="subtle" className="opacity-30" />
-        <div className="container mx-auto px-4 relative z-10">
+      <ClientOnly fallback={
+        <section className="py-20 bg-nature-primary/5 dark:bg-nature-primary/10 relative overflow-hidden">
+          <div className="container mx-auto px-4 relative z-10">
+            <h2 className="heading-section text-nature-primary font-japanese mb-6">A Magical Place to Learn & Grow</h2>
+            <p className="text-nature-secondary text-lg mb-6">Welcome to Akshararambh Public School, where learning is an adventure!</p>
+          </div>
+        </section>
+      }>
+        <section className="py-20 bg-nature-primary/5 dark:bg-nature-primary/10 relative overflow-hidden">
+          <ThemeAwareBackground type="particles" intensity="subtle" className="opacity-30" />
+          <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
             <div>
@@ -159,7 +167,8 @@ export default function AboutSection() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </ClientOnly>
 
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="Our Approach to Smart Education">
         {smartEducationContent}

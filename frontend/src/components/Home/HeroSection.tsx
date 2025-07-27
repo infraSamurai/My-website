@@ -3,7 +3,6 @@ import Image from 'next/image';
 import { ArrowRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { OrganicFadeIn, BreathingElement, RippleButton } from '../Nature/OrganicAnimations';
-import { ThemeAwareBackground } from '../backgrounds';
 import ClientOnly from '../ClientOnly';
 import dynamic from 'next/dynamic';
 
@@ -12,15 +11,24 @@ const GradientText = dynamic(() => import('../reactbits/GradientText'), { ssr: f
 const GlassCard = dynamic(() => import('../reactbits/GlassCard'), { ssr: false });
 const ClickSpark = dynamic(() => import('../reactbits/ClickSpark'), { ssr: false });
 const MagneticButton = dynamic(() => import('../reactbits/MagneticButton'), { ssr: false });
+const ThemeAwareBackground = dynamic(() => import('../backgrounds/ThemeAwareBackground'), { ssr: false });
 
 export default function HeroSection() {
   return (
-    <ThemeAwareBackground 
-      type="combined" 
-      intensity="subtle" 
-      interactive={true}
-      className="min-h-screen flex items-center justify-center pt-20"
-    >
+    <ClientOnly fallback={
+      <section className="min-h-screen flex items-center justify-center pt-20 bg-nature-primary/5 dark:bg-nature-primary/10">
+        <div className="relative z-10 container mx-auto px-4 text-center">
+          <h1 className="heading-hero text-nature-primary font-primary mb-8">Where Learning Blooms</h1>
+          <p className="body-text text-nature-secondary max-w-4xl mx-auto mb-12">Nurturing Young Minds from Nursery to 10th Grade</p>
+        </div>
+      </section>
+    }>
+      <ThemeAwareBackground 
+        type="combined" 
+        intensity="subtle" 
+        interactive={true}
+        className="min-h-screen flex items-center justify-center pt-20"
+      >
       
       {/* Main Content */}
       <div className="relative z-10 container mx-auto px-4 text-center">
@@ -205,6 +213,7 @@ export default function HeroSection() {
           </div>
         </div>
       </OrganicFadeIn>
-    </ThemeAwareBackground>
+      </ThemeAwareBackground>
+    </ClientOnly>
   );
 } 

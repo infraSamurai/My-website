@@ -44,20 +44,6 @@ export default function ParticleField({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas size
-    const updateSize = () => {
-      const rect = canvas.getBoundingClientRect();
-      canvas.width = rect.width * window.devicePixelRatio;
-      canvas.height = rect.height * window.devicePixelRatio;
-      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
-      
-      // Update particles for new size
-      initParticles();
-    };
-
-    updateSize();
-    window.addEventListener('resize', updateSize);
-
     // Particle system setup
     const densityMap = { low: 30, medium: 60, high: 100 };
     const speedMultiplier = speed === 'slow' ? 0.3 : speed === 'fast' ? 1.5 : 1;
@@ -80,6 +66,19 @@ export default function ParticleField({
       }
     };
 
+    // Set canvas size
+    const updateSize = () => {
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * window.devicePixelRatio;
+      canvas.height = rect.height * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      
+      // Update particles for new size
+      initParticles();
+    };
+
+    updateSize();
+    window.addEventListener('resize', updateSize);
     initParticles();
 
     // Mouse interaction handlers
