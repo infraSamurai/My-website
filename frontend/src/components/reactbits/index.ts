@@ -3,3 +3,8 @@ export { default as BlurIn } from './BlurIn';
 export { default as GradientText } from './GradientText';
 export { default as MagneticButton } from './MagneticButton';
 export { default as ParallaxText } from './ParallaxText';
+export { default as SplitText } from './SplitText';
+export { default as GlassCard } from './GlassCard';
+export { default as ClickSpark } from './ClickSpark';
+export { default as CountUp } from './CountUp';
+export { default as Aurora } from './Aurora';
