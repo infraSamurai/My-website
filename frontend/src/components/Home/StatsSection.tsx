@@ -1,13 +1,7 @@
 "use client";
 import { Users, Star, BookOpen, GraduationCap } from 'lucide-react';
 import { motion } from 'framer-motion';
-import dynamic from 'next/dynamic';
-import ClientOnly from '../ClientOnly';
-
-const CountUp = dynamic(() => import('../reactbits/CountUp'), { ssr: false });
-const GlassCard = dynamic(() => import('../reactbits/GlassCard'), { ssr: false });
-const ClickSpark = dynamic(() => import('../reactbits/ClickSpark'), { ssr: false });
-const SplitText = dynamic(() => import('../reactbits/SplitText'), { ssr: false });
+import { CountUp, GlassCard, ClickSpark, SplitText } from '../reactbits';
 
 const stats = [
   { icon: Users, value: 500, suffix: '+', label: 'Happy Students', color: 'text-nature-accent' },
@@ -27,15 +21,11 @@ export default function StatsSection() {
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <ClientOnly fallback={
-            <h2 className="text-4xl md:text-5xl font-bold text-nature-primary mb-4">Our Achievements</h2>
-          }>
-            <SplitText 
-              text="Our Achievements" 
-              className="text-4xl md:text-5xl font-bold text-nature-primary mb-4"
-              animation="slideUp"
-            />
-          </ClientOnly>
+          <SplitText 
+            text="Our Achievements" 
+            className="text-4xl md:text-5xl font-bold text-nature-primary mb-4"
+            animation="slideUp"
+          />
           <p className="text-xl text-nature-secondary max-w-3xl mx-auto">
             Building excellence through dedication, innovation, and a commitment to nurturing every student's potential.
           </p>
@@ -45,50 +35,31 @@ export default function StatsSection() {
           {stats.map((stat, idx) => {
             const Icon = stat.icon;
             return (
-              <ClientOnly 
-                key={idx}
-                fallback={
-                  <div className="text-center p-8 bg-white/20 dark:bg-black/20 backdrop-blur-sm rounded-xl border border-white/30">
-                    <div className="flex justify-center mb-6">
-                      <Icon className={`w-16 h-16 ${stat.color}`} />
-                    </div>
-                    <div className="mb-4">
-                      <div className="text-4xl md:text-5xl font-bold text-nature-primary">
-                        {stat.value}{stat.suffix}
-                      </div>
-                    </div>
-                    <p className="text-nature-secondary text-lg font-medium">
-                      {stat.label}
-                    </p>
+              <ClickSpark key={idx}>
+                <GlassCard 
+                  className="text-center p-8"
+                  hover={true}
+                  glow={true}
+                  blur="md"
+                >
+                  <div className="flex justify-center mb-6">
+                    <Icon className={`w-16 h-16 ${stat.color}`} />
                   </div>
-                }
-              >
-                <ClickSpark>
-                  <GlassCard 
-                    className="text-center p-8"
-                    hover={true}
-                    glow={true}
-                    blur="md"
-                  >
-                    <div className="flex justify-center mb-6">
-                      <Icon className={`w-16 h-16 ${stat.color}`} />
-                    </div>
-                    
-                    <div className="mb-4">
-                      <CountUp 
-                        to={stat.value}
-                        suffix={stat.suffix}
-                        duration={2.5}
-                        className="text-4xl md:text-5xl font-bold text-nature-primary"
-                      />
-                    </div>
-                    
-                    <p className="text-nature-secondary text-lg font-medium">
-                      {stat.label}
-                    </p>
-                  </GlassCard>
-                </ClickSpark>
-              </ClientOnly>
+                  
+                  <div className="mb-4">
+                    <CountUp 
+                      to={stat.value}
+                      suffix={stat.suffix}
+                      duration={2.5}
+                      className="text-4xl md:text-5xl font-bold text-nature-primary"
+                    />
+                  </div>
+                  
+                  <p className="text-nature-secondary text-lg font-medium">
+                    {stat.label}
+                  </p>
+                </GlassCard>
+              </ClickSpark>
             );
           })}
         </div>
