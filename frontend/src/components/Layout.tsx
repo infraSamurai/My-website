@@ -1,8 +1,7 @@
 import type { ReactNode } from 'react';
 import Header from './Header';
 import Footer from './Footer';
-import StarfieldBackground from './StarfieldBackground';
-// import TreeScene from './Home/TreeScene';
+import { SeasonsOfLearning } from './Memorable/SeasonsOfLearning';
 
 interface LayoutProps {
   children: ReactNode;
@@ -10,13 +9,12 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col bg-transparent">
-      <StarfieldBackground />
+    <SeasonsOfLearning intensity="subtle" className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 pt-20" style={{ position: 'relative', zIndex: 1 }}>
+      <main className="flex-1 pt-20 relative z-10">
         {children}
       </main>
       <Footer />
-    </div>
+    </SeasonsOfLearning>
   );
 } 

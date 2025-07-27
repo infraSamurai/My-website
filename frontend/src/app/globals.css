@@ -7,17 +7,31 @@
     @apply scroll-smooth;
   }
 
+  /* Japanese Nature Theme - Wabi-Sabi Inspired */
   body {
-    @apply bg-brand-neutral-900 text-brand-neutral-300 font-sans;
+    @apply font-sans antialiased transition-colors duration-500;
+    background-color: var(--ivory-warm);
+    color: var(--earth-warm);
   }
 
-  /* Force a default light text color on all elements */
+  /* Dark mode body styles */
+  .dark body {
+    background-color: var(--forest-deep);
+    color: var(--moonlight);
+  }
+
+  /* Natural text inheritance */
   * {
     @apply text-inherit;
   }
 
   a {
-    @apply text-inherit hover:text-brand-primary;
+    @apply text-inherit transition-colors duration-200;
+    color: var(--bamboo-fresh);
+  }
+
+  a:hover {
+    color: var(--sage-soft);
   }
 
   h1,
@@ -26,7 +40,32 @@
   h4,
   h5,
   h6 {
-    @apply font-heading text-brand-neutral-100;
+    font-family: var(--font-japanese);
+    color: var(--earth-warm);
+  }
+
+  h1 {
+    @apply text-4xl md:text-6xl lg:text-7xl font-bold;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl lg:text-4xl font-semibold;
+  }
+
+  h4 {
+    @apply text-xl md:text-2xl lg:text-3xl font-semibold;
+  }
+
+  h5 {
+    @apply text-lg md:text-xl lg:text-2xl font-medium;
+  }
+
+  h6 {
+    @apply text-base md:text-lg lg:text-xl font-medium;
   }
 }
 
@@ -34,8 +73,215 @@
   .section-padding {
     @apply py-16 md:py-24;
   }
+  
   .container {
     @apply mx-auto px-4;
+  }
+
+  /* Japanese Nature Card Components */
+  .card {
+    background-color: var(--paper-natural);
+    @apply backdrop-blur-md rounded-2xl shadow-xl transition-all duration-300;
+    border: 1px solid var(--stone-calm);
+    box-shadow: var(--shadow-organic);
+  }
+
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--glow-gentle);
+  }
+
+  .glass-card {
+    background: var(--paper-natural);
+    @apply backdrop-blur-lg rounded-2xl shadow-2xl transition-all duration-300;
+    border: 1px solid var(--stone-calm);
+    box-shadow: var(--shadow-organic);
+  }
+
+  /* Japanese Nature Button Variants */
+  .btn-primary {
+    background: var(--sage-soft);
+    @apply text-white px-8 py-3 rounded-full font-semibold transition-all duration-300;
+    box-shadow: var(--shadow-organic);
+  }
+
+  .btn-primary:hover {
+    background: var(--bamboo-fresh);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--glow-gentle);
+  }
+
+  .btn-secondary {
+    background: var(--cherry-whisper);
+    @apply text-white px-8 py-3 rounded-full font-semibold transition-all duration-300;
+    box-shadow: var(--shadow-organic);
+  }
+
+  .btn-secondary:hover {
+    background: var(--sunset-glow);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--glow-cherry);
+  }
+
+  .btn-accent {
+    background: var(--bamboo-fresh);
+    @apply text-white px-8 py-3 rounded-full font-semibold transition-all duration-300;
+    box-shadow: var(--shadow-organic);
+  }
+
+  .btn-accent:hover {
+    background: var(--moss-gentle);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: var(--glow-bamboo);
+  }
+
+  .btn-ghost {
+    @apply bg-transparent px-8 py-3 rounded-full font-semibold transition-all duration-300;
+    border: 2px solid var(--sage-soft);
+    color: var(--sage-soft);
+  }
+
+  .btn-ghost:hover {
+    background: var(--sage-soft);
+    @apply text-white scale-105;
+    transform: translateY(-2px) scale(1.05);
+  }
+
+  /* Japanese Nature Text Effects */
+  .text-gradient {
+    background: linear-gradient(135deg, var(--sage-soft), var(--bamboo-fresh), var(--cherry-whisper));
+    @apply bg-clip-text text-transparent;
+  }
+
+  .text-nature-gradient {
+    background: linear-gradient(135deg, var(--bamboo-fresh), var(--sage-soft));
+    @apply bg-clip-text text-transparent;
+  }
+
+  .text-shimmer {
+    @apply relative overflow-hidden;
+    background: linear-gradient(135deg, var(--sage-soft), var(--bamboo-fresh), var(--cherry-whisper));
+    @apply bg-clip-text text-transparent;
+  }
+
+  .text-shimmer::before {
+    content: '';
+    @apply absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent;
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  /* Minimal Animation Utilities */
+  .animate-on-scroll {
+    @apply opacity-0 translate-y-4 transition-all duration-300;
+  }
+
+  .animate-on-scroll.in-view {
+    @apply opacity-100 translate-y-0;
+  }
+
+  .hover-lift {
+    @apply transition-transform duration-200 hover:-translate-y-1;
+  }
+
+  /* Layout Utilities */
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .absolute-center {
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+  }
+
+  /* Backdrop Effects */
+  .backdrop-glass {
+    @apply bg-white/10 backdrop-blur-md border border-white/20;
+  }
+
+  .backdrop-dark {
+    @apply bg-black/20 backdrop-blur-md border border-white/10;
+  }
+
+  /* Space Theme Components */
+  .space-card {
+    @apply bg-gradient-to-br from-brand-space-void/50 to-brand-space-nebula/30 backdrop-blur-lg rounded-2xl border border-brand-space-star/20 shadow-2xl;
+  }
+
+  .space-glow {
+    @apply shadow-[0_0_20px_rgba(107,70,193,0.4),0_0_40px_rgba(139,92,246,0.3)];
+  }
+
+  .stellar-border {
+    @apply border-2 border-transparent bg-gradient-to-r from-brand-space-star to-brand-space-galaxy p-0.5 rounded-2xl;
+  }
+
+  .cosmic-text {
+    @apply bg-gradient-to-r from-brand-space-star via-brand-space-galaxy to-brand-space-cosmic bg-clip-text text-transparent;
+  }
+
+  /* Tech Theme Components */
+  .tech-card {
+    @apply bg-gradient-to-br from-brand-tech-digital/20 to-brand-tech-cyber/20 backdrop-blur-lg rounded-2xl border border-brand-tech-neon/30 shadow-2xl;
+  }
+
+  .neon-glow {
+    @apply shadow-[0_0_20px_rgba(0,255,136,0.4),0_0_40px_rgba(34,211,238,0.3)];
+  }
+
+  .circuit-border {
+    @apply border-2 border-transparent bg-gradient-to-r from-brand-tech-neon to-brand-tech-circuit p-0.5 rounded-2xl;
+  }
+
+  .matrix-text {
+    @apply bg-gradient-to-r from-brand-tech-neon via-brand-tech-matrix to-brand-tech-hologram bg-clip-text text-transparent;
+  }
+
+  /* Enhanced Animation Effects */
+  .morphing-element {
+    @apply transition-all duration-700 ease-in-out;
+  }
+
+  .parallax-element {
+    @apply transition-transform duration-200 ease-out;
+  }
+
+  .glitch-effect {
+    @apply relative;
+  }
+
+  .glitch-effect::before,
+  .glitch-effect::after {
+    content: attr(data-text);
+    @apply absolute top-0 left-0 opacity-80;
+  }
+
+  .glitch-effect::before {
+    @apply animate-digital-glitch text-brand-tech-neon;
+    clip-path: polygon(0 0, 100% 0, 100% 33%, 0 33%);
+  }
+
+  .glitch-effect::after {
+    @apply animate-digital-glitch text-brand-tech-cyber;
+    clip-path: polygon(0 67%, 100% 67%, 100% 100%, 0 100%);
+    animation-delay: 0.5s;
+  }
+}
+
+/* Wave Animation */
+@keyframes wave {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 

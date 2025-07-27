@@ -1,0 +1,17 @@
+{
+  "registries": [],
+  "watermark": true,
+  "tests": false,
+  "docs": false,
+  "formatter": "prettier",
+  "paths": {
+    "components": "src/components/reactbits",
+    "utils": "src/lib/utils",
+    "hooks": "src/hooks",
+    "types": "src/types"
+  },
+  "configFiles": {},
+  "expand": false,
+  "maxUnchanged": 3,
+  "cache": true
+}

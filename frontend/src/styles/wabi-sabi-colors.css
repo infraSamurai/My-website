@@ -1,0 +1,233 @@
+/* Wabi-Sabi Color Palette - Japanese Nature-Inspired */
+
+:root {
+  /* Light Mode - Nature Harmony */
+  --ivory-warm: #FAF7F2;        /* Base background - warm ivory */
+  --sage-soft: #9CAF88;         /* Primary accent - soft sage */
+  --bamboo-fresh: #4A7C59;      /* Secondary accent - bamboo green */
+  --cherry-whisper: #F8BBD9;    /* Subtle highlights - cherry blossom */
+  --earth-warm: #8B7355;        /* Text accents - warm earth */
+  --stone-calm: #E8E8E8;        /* Borders/dividers - calm stone */
+  --paper-natural: #F5F2E8;     /* Card backgrounds - natural paper */
+  --moss-gentle: #7BA05B;       /* Interactive elements - gentle moss */
+  --sunset-glow: #F4A460;       /* Warning/accent - sunset glow */
+  --morning-mist: #E6E9E6;      /* Hover states - morning mist */
+
+  /* Dark Mode - Evening Garden */
+  --forest-deep: #1A2F1A;       /* Base background - deep forest */
+  --moonlight: #E5E5E5;         /* Primary text - moonlight */
+  --moss-glow: #7BA05B;         /* Primary accent - glowing moss */
+  --night-bloom: #D4A5C7;       /* Secondary accent - night blooming flower */
+  --bark-warm: #5D4E37;         /* Card backgrounds - warm bark */
+  --shadow-soft: #2A2A2A;       /* Dividers - soft shadows */
+  --dew-subtle: #B8C5B8;        /* Secondary text - morning dew */
+  --ember-glow: #FF6B47;        /* Interactive - ember glow */
+  --night-sky: #1A1A2E;         /* Deep backgrounds - night sky */
+  --star-light: #F0F0F0;        /* Bright accents - starlight */
+
+  /* Organic shadows and glows */
+  --shadow-organic: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-organic-dark: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --glow-gentle: 0 0 20px rgba(156, 175, 136, 0.3);
+  --glow-cherry: 0 0 30px rgba(248, 187, 217, 0.4);
+  --glow-bamboo: 0 0 25px rgba(74, 124, 89, 0.3);
+}
+
+/* Color utility classes for light mode */
+.bg-nature-primary { background-color: var(--ivory-warm); }
+.bg-nature-secondary { background-color: var(--paper-natural); }
+.bg-nature-accent { background-color: var(--sage-soft); }
+.bg-nature-card { background-color: var(--paper-natural); }
+
+.text-nature-primary { color: var(--earth-warm); }
+.text-nature-secondary { color: var(--bamboo-fresh); }
+.text-nature-accent { color: var(--sage-soft); }
+.text-nature-subtle { color: var(--stone-calm); }
+
+.border-nature { border-color: var(--stone-calm); }
+.border-nature-accent { border-color: var(--sage-soft); }
+
+/* Color utility classes for dark mode */
+.dark .bg-nature-primary { background-color: var(--forest-deep); }
+.dark .bg-nature-secondary { background-color: var(--night-sky); }
+.dark .bg-nature-accent { background-color: var(--moss-glow); }
+.dark .bg-nature-card { background-color: var(--bark-warm); }
+
+.dark .text-nature-primary { color: var(--moonlight); }
+.dark .text-nature-secondary { color: var(--dew-subtle); }
+.dark .text-nature-accent { color: var(--moss-glow); }
+.dark .text-nature-subtle { color: var(--shadow-soft); }
+
+.dark .border-nature { border-color: var(--shadow-soft); }
+.dark .border-nature-accent { border-color: var(--moss-glow); }
+
+/* Organic gradients */
+.gradient-nature-warm {
+  background: linear-gradient(135deg, var(--ivory-warm) 0%, var(--paper-natural) 100%);
+}
+
+.gradient-nature-sage {
+  background: linear-gradient(135deg, var(--sage-soft) 0%, var(--bamboo-fresh) 100%);
+}
+
+.gradient-nature-sunset {
+  background: linear-gradient(135deg, var(--sunset-glow) 0%, var(--cherry-whisper) 100%);
+}
+
+.dark .gradient-nature-warm {
+  background: linear-gradient(135deg, var(--forest-deep) 0%, var(--night-sky) 100%);
+}
+
+.dark .gradient-nature-sage {
+  background: linear-gradient(135deg, var(--moss-glow) 0%, var(--night-bloom) 100%);
+}
+
+.dark .gradient-nature-sunset {
+  background: linear-gradient(135deg, var(--ember-glow) 0%, var(--night-bloom) 100%);
+}
+
+/* Organic button styles */
+.btn-nature {
+  background: var(--sage-soft);
+  color: white;
+  border: 2px solid transparent;
+  border-radius: 2rem;
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  box-shadow: var(--shadow-organic);
+}
+
+.btn-nature:hover {
+  background: var(--bamboo-fresh);
+  transform: translateY(-2px);
+  box-shadow: var(--glow-gentle);
+}
+
+.dark .btn-nature {
+  background: var(--moss-glow);
+  box-shadow: var(--shadow-organic-dark);
+}
+
+.dark .btn-nature:hover {
+  background: var(--night-bloom);
+  box-shadow: var(--glow-bamboo);
+}
+
+/* Organic card styles */
+.card-nature {
+  background: var(--paper-natural);
+  border: 1px solid var(--stone-calm);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  box-shadow: var(--shadow-organic);
+  transition: all 0.3s ease;
+}
+
+.card-nature:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--glow-gentle);
+}
+
+.dark .card-nature {
+  background: var(--bark-warm);
+  border-color: var(--shadow-soft);
+  box-shadow: var(--shadow-organic-dark);
+}
+
+.dark .card-nature:hover {
+  box-shadow: var(--glow-bamboo);
+}
+
+/* Asymmetrical design elements (Fukinsei) - Subtle and Professional */
+.asymmetrical-border {
+  border-radius: 24px 16px 24px 8px;
+}
+
+.asymmetrical-padding {
+  padding: 32px 24px 40px 32px;
+}
+
+/* Subtle asymmetry for accents only */
+.accent-asymmetry {
+  border-radius: 16px 12px 16px 8px;
+  padding: 16px 12px 20px 16px;
+}
+
+/* 8px Grid System for Perfect Alignment */
+.grid-8 { margin: 8px; }
+.grid-16 { margin: 16px; }
+.grid-24 { margin: 24px; }
+.grid-32 { margin: 32px; }
+.grid-48 { margin: 48px; }
+.grid-64 { margin: 64px; }
+
+.p-grid-8 { padding: 8px; }
+.p-grid-16 { padding: 16px; }
+.p-grid-24 { padding: 24px; }
+.p-grid-32 { padding: 32px; }
+.p-grid-48 { padding: 48px; }
+.p-grid-64 { padding: 64px; }
+
+.gap-grid-8 { gap: 8px; }
+.gap-grid-16 { gap: 16px; }
+.gap-grid-24 { gap: 24px; }
+.gap-grid-32 { gap: 32px; }
+.gap-grid-48 { gap: 48px; }
+
+/* Natural spacing (Ma - negative space) with 8px grid */
+.nature-spacing > * + * {
+  margin-top: 24px;
+}
+
+.nature-spacing-large > * + * {
+  margin-top: 48px;
+}
+
+/* Professional Section Spacing */
+.section-spacing {
+  padding: 64px 24px;
+}
+
+.card-spacing {
+  padding: 24px;
+  margin: 16px;
+}
+
+.text-spacing {
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+/* Organic shapes */
+.organic-blob {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+}
+
+.organic-blob-alt {
+  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
+}
+
+/* Texture overlays */
+.texture-paper {
+  position: relative;
+}
+
+.texture-paper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(139, 115, 85, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(74, 124, 89, 0.02) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.dark .texture-paper::before {
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(123, 160, 91, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(212, 165, 199, 0.03) 0%, transparent 50%);
+}

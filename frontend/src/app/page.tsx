@@ -7,18 +7,18 @@ import FacilitiesSection from '../components/Home/FacilitiesSection';
 import ActivitiesSection from '../components/Home/ActivitiesSection';
 import CTASection from '../components/Home/CTASection';
 import ContactSection from '../components/Home/ContactSection';
-import WavelengthBackground from '@/components/Home/WavelengthBackground';
-
+import { SectionBell } from '../components/Memorable/DigitalSchoolBell';
+import { SchoolDayTimeline } from '../components/Memorable/SchoolDayTimeline';
+import { GrowthTree } from '../components/Memorable/GrowthTree';
 
 const PlaceholderSection = ({ id, title, children }: { id: string, title: string, children: React.ReactNode }) => (
-  <section id={id} className="py-20 bg-brand-neutral-900 text-white">
+  <section id={id} className="py-20 bg-nature-primary">
     <div className="container mx-auto px-4 text-center">
-      <h2 className="text-4xl font-bold mb-4">{title}</h2>
-      <p className="text-lg text-brand-neutral-300">{children}</p>
+      <h2 className="heading-section text-nature-primary font-japanese mb-4">{title}</h2>
+      <p className="body-text text-nature-secondary max-w-2xl mx-auto">{children}</p>
     </div>
   </section>
 );
-
 
 export default function HomePage() {
   useEffect(() => {
@@ -31,25 +31,42 @@ export default function HomePage() {
       }
     }
   }, []);
+  
   return (
     <>
       <HeroSection />
-      <StatsSection />
+      <SectionBell sectionName="Our School Story">
+        <StatsSection />
+      </SectionBell>
       <div id="about">
-        <AboutSection />
+        <SectionBell sectionName="About Us">
+          <AboutSection />
+        </SectionBell>
       </div>
+      <SchoolDayTimeline />
       <PlaceholderSection id="academics" title="Academics">
         Our curriculum is designed to be rigorous and engaging, preparing students for future success. More details coming soon.
       </PlaceholderSection>
       <div id="facilities">
-         <FacilitiesSection />
+        <SectionBell sectionName="Our Facilities">
+          <FacilitiesSection />
+        </SectionBell>
       </div>
-      <ActivitiesSection />
+      <SectionBell sectionName="School Activities">
+        <ActivitiesSection />
+      </SectionBell>
+      <SectionBell sectionName="Student Achievements">
+        <GrowthTree />
+      </SectionBell>
       <div id="admissions">
-        <CTASection />
+        <SectionBell sectionName="Join Our Family">
+          <CTASection />
+        </SectionBell>
       </div>
       <div id="contact">
-        <ContactSection />
+        <SectionBell sectionName="Connect With Us">
+          <ContactSection />
+        </SectionBell>
       </div>
     </>
   );

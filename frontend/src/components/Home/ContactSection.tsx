@@ -1,5 +1,8 @@
 "use client";
 import { useState } from 'react';
+import { FloatingLeaf, FloatingBackground } from '../Nature/FloatingLeaves';
+import { OrganicFadeIn, StaggerContainer, StaggerChild } from '../Nature/OrganicAnimations';
+import { RippleButton, BreathingCTA } from '../Nature/RippleButton';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -38,26 +41,26 @@ export default function ContactSection() {
   };
 
   return (
-    <section className="py-20 relative z-20" id="contact">
+    <section className="py-20 relative z-20 bg-brand-beige-100 dark:bg-brand-neutral-900" id="contact">
       <div className="container mx-auto px-4">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Contact Info */}
           <div>
-            <h2 className="text-4xl font-bold mb-6 text-brand-neutral-50">
+            <h2 className="text-4xl font-bold mb-6 text-brand-beige-900 dark:text-brand-neutral-50">
               <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
                 Let&apos;s Connect!
               </span>
             </h2>
-            <p className="text-brand-neutral-300 text-lg mb-8">
+            <p className="text-brand-beige-700 dark:text-brand-neutral-300 text-lg mb-8">
               We&apos;d love to hear from you and answer any questions about our school.
             </p>
             <div className="space-y-6">
               <div className="flex gap-4">
                 <div className="text-3xl">📍</div>
                 <div>
-                  <h4 className="font-semibold text-brand-neutral-100 mb-1">Visit Us</h4>
-                  <p className="text-brand-neutral-400">Akshararambh Public School, Near Daitrababa Mandir</p>
-                  <p className="text-brand-neutral-400">Murdaha, Varanasi</p>
+                  <h4 className="font-semibold text-brand-beige-900 dark:text-brand-neutral-100 mb-1">Visit Us</h4>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">Akshararambh Public School, Near Daitrababa Mandir</p>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">Murdaha, Varanasi</p>
                   <a href="https://www.google.com/maps/search/?api=1&query=Akshararambh+Public+School+Murdaha+Varanasi" target="_blank" rel="noopener noreferrer" className="text-brand-primary hover:underline mt-1 inline-block">
                     Get Directions
                   </a>
@@ -66,31 +69,31 @@ export default function ContactSection() {
               <div className="flex gap-4">
                 <div className="text-3xl">📞</div>
                 <div>
-                  <h4 className="font-semibold text-brand-neutral-100 mb-1">Call Us</h4>
-                  <p className="text-brand-neutral-400">+91 9451016643</p>
-                  <p className="text-brand-neutral-400">+91 6393566291</p>
+                  <h4 className="font-semibold text-brand-beige-900 dark:text-brand-neutral-100 mb-1">Call Us</h4>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">+91 9451016643</p>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">+91 6393566291</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="text-3xl">✉️</div>
                 <div>
-                  <h4 className="font-semibold text-brand-neutral-100 mb-1">Email Us</h4>
-                  <p className="text-brand-neutral-400">devansh.prakhar@gmail.com</p>
-                  <p className="text-brand-neutral-400">devansh.prakhar@gmail.com</p>
+                  <h4 className="font-semibold text-brand-beige-900 dark:text-brand-neutral-100 mb-1">Email Us</h4>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">devansh.prakhar@gmail.com</p>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">devansh.prakhar@gmail.com</p>
                 </div>
               </div>
               <div className="flex gap-4">
                 <div className="text-3xl">🕐</div>
                 <div>
-                  <h4 className="font-semibold text-brand-neutral-100 mb-1">Office Hours</h4>
-                  <p className="text-brand-neutral-400">Monday - Saturday: 8:00 AM - 6:00 PM</p>
+                  <h4 className="font-semibold text-brand-beige-900 dark:text-brand-neutral-100 mb-1">Office Hours</h4>
+                  <p className="text-brand-beige-600 dark:text-brand-neutral-400">Monday - Saturday: 8:00 AM - 6:00 PM</p>
                 </div>
               </div>
             </div>
           </div>
           {/* Contact Form */}
-          <div className="bg-brand-neutral-800/50 backdrop-blur-md rounded-3xl shadow-xl p-8 border border-brand-neutral-700">
-            <h3 className="text-2xl font-bold text-brand-neutral-100 mb-6">Send us a Message</h3>
+          <div className="bg-white/90 dark:bg-brand-neutral-800/50 backdrop-blur-md rounded-3xl shadow-xl p-8 border border-brand-beige-200 dark:border-brand-neutral-700">
+            <h3 className="text-2xl font-bold text-brand-beige-900 dark:text-brand-neutral-100 mb-6">Send us a Message</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
                 type="text"
@@ -99,7 +102,7 @@ export default function ContactSection() {
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400"
+                className="w-full px-4 py-3 bg-brand-beige-50 dark:bg-brand-neutral-900/50 border-2 border-brand-beige-300 dark:border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-beige-900 dark:text-brand-neutral-100 placeholder-brand-beige-500 dark:placeholder-brand-neutral-400"
               />
               <input
                 type="email"
@@ -108,7 +111,7 @@ export default function ContactSection() {
                 required
                 value={formData.email}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-neutral-100 placeholder-brand-neutral-400"
+                className="w-full px-4 py-3 bg-brand-beige-50 dark:bg-brand-neutral-900/50 border-2 border-brand-beige-300 dark:border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors text-brand-beige-900 dark:text-brand-neutral-100 placeholder-brand-beige-500 dark:placeholder-brand-neutral-400"
               />
               <textarea
                 name="message"
@@ -117,7 +120,7 @@ export default function ContactSection() {
                 required
                 value={formData.message}
                 onChange={handleChange}
-                className="w-full px-4 py-3 bg-brand-neutral-900/50 border-2 border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors resize-none text-brand-neutral-100 placeholder-brand-neutral-400"
+                className="w-full px-4 py-3 bg-brand-beige-50 dark:bg-brand-neutral-900/50 border-2 border-brand-beige-300 dark:border-brand-neutral-700 rounded-xl focus:outline-none focus:border-brand-primary transition-colors resize-none text-brand-beige-900 dark:text-brand-neutral-100 placeholder-brand-beige-500 dark:placeholder-brand-neutral-400"
               ></textarea>
               <button type="submit" disabled={status === 'sending'} className="w-full bg-gradient-to-r from-brand-primary to-brand-secondary text-white py-3 rounded-xl font-semibold hover:shadow-lg transition-all duration-300 hover:scale-[1.02] disabled:bg-brand-neutral-600 disabled:cursor-not-allowed">
                 {status === 'sending' ? 'Sending...' : 'Send Message'}

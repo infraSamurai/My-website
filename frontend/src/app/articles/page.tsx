@@ -6,6 +6,8 @@ import {
   Calculator, Landmark, Palette, Mic, Feather, Trophy, Dumbbell, Users
 } from 'lucide-react';
 import { api } from '@/lib/api';
+import { AnimatedCard, ScrollReveal, AnimatedText, AnimatedButton, FloatingElements } from '@/components/animated';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface CategoryStyle {
   id: string;
@@ -24,28 +26,28 @@ const mainlineCategoryGroups: CategoryGroup[] = [
   {
     groupTitle: 'Academic Subjects',
     categories: [
-      { id: 'english-literature', title: 'English Literature', description: 'Stories, poems, and literary analysis.', icon: Globe, color: 'from-blue-500 to-purple-500' },
-      { id: 'hindi-literature', title: 'Hindi Literature', description: 'कहानियाँ, कविताएँ और साहित्यिक रचनाएँ।', icon: BookOpen, color: 'from-orange-500 to-red-500' },
-      { id: 'mathematics', title: 'Mathematics', description: 'Concepts, puzzles, and the beauty of numbers.', icon: Calculator, color: 'from-cyan-500 to-blue-500' },
-      { id: 'science-technology', title: 'Science & Technology', description: 'Latest in discovery, tech, and computer science.', icon: Zap, color: 'from-green-500 to-teal-500' },
-      { id: 'history-civics', title: 'History & Civics', description: 'Exploring history, geography, and civics.', icon: Landmark, color: 'from-amber-500 to-orange-500' },
-      { id: 'philosophy', title: 'Philosophy', description: "Deep thoughts on life's big questions.", icon: Brain, color: 'from-indigo-500 to-purple-500' },
+      { id: 'english-literature', title: 'English Literature', description: 'Stories, poems, and literary analysis.', icon: Globe, color: '#4A7C59' },
+      { id: 'hindi-literature', title: 'Hindi Literature', description: 'कहानियाँ, कविताएँ और साहित्यिक रचनाएँ।', icon: BookOpen, color: '#9CAF88' },
+      { id: 'mathematics', title: 'Mathematics', description: 'Concepts, puzzles, and the beauty of numbers.', icon: Calculator, color: '#8B7355' },
+      { id: 'science-technology', title: 'Science & Technology', description: 'Latest in discovery, tech, and computer science.', icon: Zap, color: '#7BA05B' },
+      { id: 'history-civics', title: 'History & Civics', description: 'Exploring history, geography, and civics.', icon: Landmark, color: '#F4A460' },
+      { id: 'philosophy', title: 'Philosophy', description: "Deep thoughts on life's big questions.", icon: Brain, color: '#F8BBD9' },
     ]
   },
   {
     groupTitle: 'Creative Corner',
     categories: [
-      { id: 'visual-arts', title: 'Visual Arts', description: 'Showcasing student paintings, drawings, and art.', icon: Palette, color: 'from-pink-500 to-rose-500' },
-      { id: 'performing-arts', title: 'Performing Arts', description: 'Drama, music concerts, and dance performances.', icon: Mic, color: 'from-red-500 to-pink-500' },
-      { id: 'creative-writing', title: 'Creative Writing', description: 'A home for original student poetry and stories.', icon: Feather, color: 'from-teal-500 to-cyan-500' },
+      { id: 'visual-arts', title: 'Visual Arts', description: 'Showcasing student paintings, drawings, and art.', icon: Palette, color: '#F8BBD9' },
+      { id: 'performing-arts', title: 'Performing Arts', description: 'Drama, music concerts, and dance performances.', icon: Mic, color: '#F4A460' },
+      { id: 'creative-writing', title: 'Creative Writing', description: 'A home for original student poetry and stories.', icon: Feather, color: '#9CAF88' },
     ]
   },
   {
     groupTitle: 'Campus Life',
     categories: [
-      { id: 'sports-athletics', title: 'Sports & Athletics', description: 'Match reports, team updates, and athlete spotlights.', icon: Dumbbell, color: 'from-lime-500 to-green-500' },
-      { id: 'clubs-activities', title: 'Clubs & Activities', description: 'News and events from school clubs and societies.', icon: Users, color: 'from-fuchsia-500 to-purple-500' },
-      { id: 'student-achievements', title: 'Student Achievements', description: 'Celebrating academic and extracurricular success.', icon: Trophy, color: 'from-yellow-500 to-amber-500' },
+      { id: 'sports-athletics', title: 'Sports & Athletics', description: 'Match reports, team updates, and athlete spotlights.', icon: Dumbbell, color: '#4A7C59' },
+      { id: 'clubs-activities', title: 'Clubs & Activities', description: 'News and events from school clubs and societies.', icon: Users, color: '#7BA05B' },
+      { id: 'student-achievements', title: 'Student Achievements', description: 'Celebrating academic and extracurricular success.', icon: Trophy, color: '#8B7355' },
     ]
   }
 ];
@@ -121,181 +123,264 @@ export default function ArticlesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-brand-neutral-900 pt-20">
+    <div className="min-h-screen bg-nature-primary dark:bg-nature-primary pt-20">
+      <FloatingElements theme="education" density="medium" />
+      
       {/* Hero Section */}
-      <section className="py-20 relative z-20">
+      <section className="section-padding relative overflow-hidden">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-brand-neutral-50">
-            <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
-              Articles & Stories
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-brand-neutral-300 mb-12 max-w-3xl mx-auto">
-            Explore thought-provoking articles written by our community. From literature to technology, 
-            discover insights that inspire and educate.
-          </p>
+          <ScrollReveal animation="fadeUp">
+            <AnimatedText
+              text="Articles & Stories"
+              className="text-5xl md:text-7xl font-bold mb-6"
+              animation="morphing"
+              gradient={true}
+            />
+          </ScrollReveal>
+          
+          <ScrollReveal animation="fadeUp" delay={0.2}>
+            <p className="text-xl md:text-2xl text-nature-secondary dark:text-nature-secondary mb-12 max-w-3xl mx-auto">
+              Explore thought-provoking articles written by our community. From literature to technology, 
+              discover insights that inspire and educate.
+            </p>
+          </ScrollReveal>
           
           {/* CTA for Article Submission */}
-          <div className="bg-gradient-to-r from-brand-primary to-brand-secondary rounded-3xl p-8 md:p-12 mb-16 max-w-4xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-              Share Your Knowledge!
-            </h2>
-            <p className="text-xl text-white/90 mb-6">
-              Have an interesting article to share? We welcome contributions from students, teachers, and community members.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <a 
-                href="mailto:devansh.prakhar@gmail.com?subject=Article Submission for School Website"
-                className="bg-white text-brand-primary px-8 py-4 rounded-full font-bold hover:shadow-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+          <ScrollReveal animation="fadeUp" delay={0.4}>
+            <AnimatedCard background="gradient" className="max-w-4xl mx-auto p-8 md:p-12 mb-8">
+              <motion.div
+                initial={{ scale: 0.9 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5 }}
               >
-                <Mail className="w-5 h-5" />
-                Submit Your Article
-              </a>
-              <p className="text-white/80 text-sm">
-                Email us at: devansh.prakhar@gmail.com
-              </p>
-            </div>
-          </div>
+                <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+                  Share Your Knowledge!
+                </h2>
+                <p className="text-xl text-white/90 mb-6">
+                  Have an interesting article to share? We welcome contributions from students, teachers, and community members.
+                </p>
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                  <AnimatedButton
+                    variant="ghost"
+                    size="lg"
+                    className="bg-white text-nature-primary hover:bg-white/90"
+                    onClick={() => window.location.href = "mailto:devansh.prakhar@gmail.com?subject=Article Submission for School Website"}
+                  >
+                    <Mail className="w-5 h-5 mr-2" />
+                    Submit Your Article
+                  </AnimatedButton>
+                  <p className="text-white/80 text-sm">
+                    Email us at: devansh.prakhar@gmail.com
+                  </p>
+                </div>
+              </motion.div>
+            </AnimatedCard>
+          </ScrollReveal>
         </div>
       </section>
 
       {/* Categories Grid */}
-      <section className="py-20 relative z-20">
+      <section className="section-padding">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-brand-neutral-50">
-            <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
+          <ScrollReveal animation="fadeUp" className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
               Explore Categories
-            </span>
-          </h2>
+            </h2>
+            <p className="text-xl text-nature-secondary dark:text-nature-secondary max-w-3xl mx-auto">
+              Dive into various topics and discover articles that match your interests.
+            </p>
+          </ScrollReveal>
           
-          {loading ? (
-             <div className="space-y-16">
-              {[...Array(3)].map((_, i) => (
-                <div key={i}>
-                  <div className="h-9 bg-brand-neutral-700 rounded w-1/3 mb-8 animate-pulse"></div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {[...Array(3)].map((_, j) => (
-                       <div key={j} className="bg-brand-neutral-800/50 rounded-3xl p-8 border border-brand-neutral-700 animate-pulse">
-                        <div className="w-16 h-16 bg-brand-neutral-700 rounded-2xl mb-6"></div>
-                        <div className="h-8 bg-brand-neutral-700 rounded w-3/4 mb-4"></div>
-                        <div className="h-4 bg-brand-neutral-700 rounded w-full mb-2"></div>
-                        <div className="h-4 bg-brand-neutral-700 rounded w-5/6 mb-4"></div>
-                        <div className="h-4 bg-brand-neutral-700 rounded w-1/4 mt-4"></div>
-                      </div>
-                    ))}
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <motion.div
+                key="loading"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-16"
+              >
+                {[...Array(3)].map((_, i) => (
+                  <div key={i}>
+                    <div className="h-9 bg-brand-neutral-700 rounded w-1/3 mb-8 animate-pulse"></div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {[...Array(3)].map((_, j) => (
+                        <div key={j} className="bg-brand-neutral-800/50 rounded-3xl p-8 border border-brand-neutral-700 animate-pulse">
+                          <div className="w-16 h-16 bg-brand-neutral-700 rounded-2xl mb-6"></div>
+                          <div className="h-8 bg-brand-neutral-700 rounded w-3/4 mb-4"></div>
+                          <div className="h-4 bg-brand-neutral-700 rounded w-full mb-2"></div>
+                          <div className="h-4 bg-brand-neutral-700 rounded w-5/6 mb-4"></div>
+                          <div className="h-4 bg-brand-neutral-700 rounded w-1/4 mt-4"></div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          ) : categoryGroups.length > 0 ? (
-            <div className="space-y-16">
-              {categoryGroups.map((group) => (
-                <div key={group.groupTitle}>
-                  <h3 className="text-3xl font-bold text-brand-neutral-100 mb-8 border-l-4 border-brand-primary pl-4">
-                    {group.groupTitle}
+                ))}
+              </motion.div>
+            ) : categoryGroups.length > 0 ? (
+              <motion.div
+                key="content"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="space-y-16"
+              >
+                {categoryGroups.map((group, groupIndex) => (
+                  <div key={group.groupTitle}>
+                    <ScrollReveal animation="fadeUp" delay={groupIndex * 0.1}>
+                      <motion.div
+                        className="flex items-center gap-4 mb-8"
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: groupIndex * 0.1 }}
+                      >
+                        <div className="w-1 h-12 bg-gradient-primary rounded-full"></div>
+                        <h3 className="text-3xl font-bold text-nature-primary dark:text-nature-primary">
+                          {group.groupTitle}
+                        </h3>
+                      </motion.div>
+                    </ScrollReveal>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {group.categories.map((cat, catIndex) => {
+                        const Icon = cat.icon;
+                        return (
+                          <ScrollReveal 
+                            key={cat.id} 
+                            animation="fadeUp" 
+                            delay={groupIndex * 0.1 + catIndex * 0.1}
+                          >
+                            <Link href={`/articles/${cat.id}`}>
+                              <AnimatedCard
+                                background="glass"
+                                hoverEffect="lift"
+                                className="group h-full"
+                              >
+                                <div className="p-8 h-full flex flex-col">
+                                  <motion.div
+                                    className={`w-16 h-16 bg-gradient-to-r ${cat.color} rounded-2xl flex items-center justify-center mb-6 flex-shrink-0`}
+                                    whileHover={{ scale: 1.1, rotate: 5 }}
+                                    transition={{ duration: 0.3 }}
+                                  >
+                                    <Icon className="w-8 h-8 text-white" />
+                                  </motion.div>
+                                  
+                                  <div className="flex-grow">
+                                    <h4 className="text-2xl font-bold text-nature-primary dark:text-nature-primary mb-3 group-hover:text-gradient transition-colors">
+                                      {cat.title}
+                                    </h4>
+                                    
+                                    <p className="text-nature-secondary dark:text-nature-secondary mb-4 leading-relaxed">
+                                      {cat.description}
+                                    </p>
+                                  </div>
+                                  
+                                  <div className="flex items-center justify-between mt-auto pt-4">
+                                    <span className="text-nature-secondary/70 dark:text-nature-secondary/70 text-sm font-medium">
+                                      {cat.count} {cat.count === 1 ? 'article' : 'articles'}
+                                    </span>
+                                    <motion.div
+                                      className="flex items-center gap-2 text-nature-secondary/70 dark:text-nature-secondary/70 group-hover:text-nature-accent transition-colors"
+                                      whileHover={{ x: 5 }}
+                                    >
+                                      <span className="text-sm">Explore</span>
+                                      <ArrowRight className="w-4 h-4" />
+                                    </motion.div>
+                                  </div>
+                                </div>
+                              </AnimatedCard>
+                            </Link>
+                          </ScrollReveal>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            ) : (
+              <ScrollReveal animation="fadeUp">
+                <div className="text-center py-12">
+                  <BookOpen className="w-16 h-16 text-nature-secondary/50 dark:text-nature-secondary/50 mx-auto mb-4" />
+                  <h3 className="text-2xl font-semibold text-nature-secondary dark:text-nature-secondary mb-2">
+                    No Categories Found
                   </h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {group.categories.map((cat) => {
-                      const Icon = cat.icon;
-                      return (
-                        <Link 
-                          key={cat.id}
-                          href={`/articles/${cat.id}`}
-                          className="group"
-                        >
-                          <div className="bg-brand-neutral-800/50 backdrop-blur-md rounded-3xl p-8 border border-brand-neutral-700 hover:border-brand-primary transition-all duration-300 hover:scale-105 h-full flex flex-col">
-                            <div className={`w-16 h-16 bg-gradient-to-r ${cat.color} rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform flex-shrink-0`}>
-                              <Icon className="w-8 h-8 text-white" />
-                            </div>
-                            
-                            <div className="flex-grow">
-                              <h3 className="text-2xl font-bold text-brand-neutral-100 mb-3 group-hover:text-brand-primary transition-colors">
-                                {cat.title}
-                              </h3>
-                              
-                              <p className="text-brand-neutral-400 mb-4 leading-relaxed">
-                                {cat.description}
-                              </p>
-                            </div>
-                            
-                            <div className="flex items-center justify-between mt-auto pt-4">
-                              <span className="text-brand-neutral-500 text-sm">
-                                {cat.count} {cat.count === 1 ? 'article' : 'articles'}
-                              </span>
-                              <ArrowRight className="w-5 h-5 text-brand-neutral-500 group-hover:text-brand-primary group-hover:translate-x-1 transition-all" />
-                            </div>
-                          </div>
-                        </Link>
-                      )
-                    })}
-                  </div>
+                  <p className="text-nature-secondary/70 dark:text-nature-secondary/70">
+                    Published articles will appear here once they are available.
+                  </p>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="col-span-full text-center py-12">
-               <h3 className="text-xl font-semibold text-brand-neutral-300 mb-2">
-                 No Categories Found
-               </h3>
-               <p className="text-brand-neutral-400">
-                 Published articles will appear here once they are available.
-               </p>
-             </div>
-          )}
+              </ScrollReveal>
+            )}
+          </AnimatePresence>
         </div>
       </section>
 
       {/* Featured Articles Section */}
-      <section className="py-20 relative z-20">
+      <section className="section-padding bg-nature-card/30 dark:bg-nature-card/30">
         <div className="container mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center mb-16 text-brand-neutral-50">
-            <span className="bg-gradient-to-r from-brand-primary to-brand-secondary bg-clip-text text-transparent">
+          <ScrollReveal animation="fadeUp" className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-4">
               Featured Articles
-            </span>
-          </h2>
+            </h2>
+            <p className="text-xl text-nature-secondary dark:text-nature-secondary max-w-3xl mx-auto">
+              Discover the most popular and engaging articles from our community.
+            </p>
+          </ScrollReveal>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredArticles.length > 0 ? (
-              featuredArticles.map((article) => (
-                <Link
-                  key={article.id}
-                  href={`/articles/${article.category.toLowerCase().replace(/\s+/g, '-')}/${article.slug}`}
-                  className="bg-brand-neutral-800/50 backdrop-blur-md rounded-3xl p-6 border border-brand-neutral-700 hover:border-brand-primary transition-all duration-300 flex flex-col"
-                >
-                  <div className="flex-grow">
-                    <span className="bg-brand-primary/20 text-brand-primary px-3 py-1 rounded-full text-sm font-medium mb-4 inline-block">
-                      {article.category}
-                    </span>
-                    <h3 className="text-xl font-bold text-brand-neutral-100 mb-3 line-clamp-2">
-                      {article.title}
-                    </h3>
-                    <p className="text-brand-neutral-400 mb-4 line-clamp-3">
-                      {getExcerpt(article.content)}
-                    </p>
-                  </div>
-                  <div className="flex items-center justify-between mt-auto pt-4 border-t border-brand-neutral-700/50">
-                    <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-brand-neutral-700 rounded-full flex items-center justify-center text-brand-neutral-500 text-sm">
-                        {article.author_name.charAt(0)}
+              featuredArticles.map((article, index) => (
+                <ScrollReveal key={article.id} animation="fadeUp" delay={index * 0.1}>
+                  <Link href={`/articles/${article.category.toLowerCase().replace(/\s+/g, '-')}/${article.slug}`}>
+                    <AnimatedCard
+                      background="glass"
+                      hoverEffect="lift"
+                      className="group h-full"
+                    >
+                      <div className="p-6 h-full flex flex-col">
+                        <div className="flex-grow">
+                          <motion.span
+                            className="bg-gradient-primary text-white px-3 py-1 rounded-full text-sm font-medium mb-4 inline-block"
+                            whileHover={{ scale: 1.05 }}
+                          >
+                            {article.category}
+                          </motion.span>
+                          
+                          <h3 className="text-xl font-bold text-brand-neutral-100 mb-3 line-clamp-2 group-hover:text-gradient transition-colors">
+                            {article.title}
+                          </h3>
+                          
+                          <p className="text-brand-neutral-400 mb-4 line-clamp-3">
+                            {getExcerpt(article.content)}
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center justify-between mt-auto pt-4 border-t border-brand-neutral-700/50">
+                          <div className="flex items-center gap-2">
+                            <div className="w-8 h-8 bg-gradient-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                              {article.author_name.charAt(0)}
+                            </div>
+                            <span className="text-brand-neutral-400 text-sm">{article.author_name}</span>
+                          </div>
+                          <span className="text-brand-neutral-500 text-sm">
+                            {new Date(article.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                          </span>
+                        </div>
                       </div>
-                      <span className="text-brand-neutral-400 text-sm">{article.author_name}</span>
-                    </div>
-                    <span className="text-brand-neutral-500 text-sm">
-                      {new Date(article.published_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-                    </span>
-                  </div>
-                </Link>
+                    </AnimatedCard>
+                  </Link>
+                </ScrollReveal>
               ))
             ) : (
-              // Optional: Add a loading or empty state for featured articles
               [...Array(3)].map((_, i) => (
-                <div key={i} className="bg-brand-neutral-800/50 rounded-3xl p-6 border border-brand-neutral-700 animate-pulse">
-                  <div className="h-6 bg-brand-neutral-700 rounded w-1/3 mb-4"></div>
-                  <div className="h-8 bg-brand-neutral-700 rounded w-3/4 mb-4"></div>
-                  <div className="h-4 bg-brand-neutral-700 rounded w-full mb-2"></div>
-                  <div className="h-4 bg-brand-neutral-700 rounded w-5/6 mb-4"></div>
-                  <div className="h-4 bg-brand-neutral-700 rounded w-1/4 mt-4"></div>
-                </div>
+                <ScrollReveal key={i} animation="fadeUp" delay={i * 0.1}>
+                  <div className="bg-brand-neutral-800/50 rounded-3xl p-6 border border-brand-neutral-700 animate-pulse">
+                    <div className="h-6 bg-brand-neutral-700 rounded w-1/3 mb-4"></div>
+                    <div className="h-8 bg-brand-neutral-700 rounded w-3/4 mb-4"></div>
+                    <div className="h-4 bg-brand-neutral-700 rounded w-full mb-2"></div>
+                    <div className="h-4 bg-brand-neutral-700 rounded w-5/6 mb-4"></div>
+                    <div className="h-4 bg-brand-neutral-700 rounded w-1/4 mt-4"></div>
+                  </div>
+                </ScrollReveal>
               ))
             )}
           </div>

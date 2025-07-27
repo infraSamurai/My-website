@@ -1,0 +1,145 @@
+/* Japanese Nature-Inspired Typography System */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+JP:wght@300;400;500;600;700&family=M+PLUS+1:wght@300;400;500;600;700&family=Sawarabi+Gothic:wght@400&display=swap');
+
+:root {
+  /* Font Family Variables */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-japanese: 'Noto Sans JP', 'Inter', sans-serif;
+  --font-minimalist: 'M PLUS 1', 'Inter', sans-serif;
+  --font-traditional: 'Sawarabi Gothic', 'Noto Sans JP', serif;
+  
+  /* Japanese-inspired font weights */
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+}
+
+/* Typography Hierarchy */
+.font-primary {
+  font-family: var(--font-primary);
+}
+
+.font-japanese {
+  font-family: var(--font-japanese);
+}
+
+.font-minimalist {
+  font-family: var(--font-minimalist);
+}
+
+.font-traditional {
+  font-family: var(--font-traditional);
+}
+
+/* Japanese-inspired text styles */
+.text-zen {
+  line-height: 1.8;
+  letter-spacing: 0.02em;
+  font-weight: var(--weight-regular);
+}
+
+.text-haiku {
+  line-height: 2;
+  letter-spacing: 0.1em;
+  font-weight: var(--weight-light);
+  font-style: italic;
+}
+
+.text-brush {
+  font-family: var(--font-traditional);
+  font-weight: var(--weight-regular);
+  line-height: 1.6;
+}
+
+/* Responsive typography scales */
+.heading-hero {
+  font-family: var(--font-primary);
+  font-weight: var(--weight-bold);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.heading-section {
+  font-family: var(--font-japanese);
+  font-weight: var(--weight-semibold);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.heading-card {
+  font-family: var(--font-minimalist);
+  font-weight: var(--weight-medium);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.3;
+}
+
+.body-text {
+  font-family: var(--font-primary);
+  font-weight: var(--weight-regular);
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.caption-text {
+  font-family: var(--font-minimalist);
+  font-weight: var(--weight-light);
+  font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+  line-height: 1.5;
+  letter-spacing: 0.02em;
+}
+
+/* Special effects for Japanese aesthetic */
+.text-wabi-sabi {
+  font-family: var(--font-traditional);
+  font-weight: var(--weight-regular);
+  line-height: 1.8;
+  letter-spacing: 0.05em;
+  opacity: 0.9;
+}
+
+.text-subtle {
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.text-subtle:hover {
+  opacity: 1;
+}
+
+/* Vertical rhythm for Japanese design */
+.japanese-spacing > * + * {
+  margin-top: 1.5rem;
+}
+
+.japanese-spacing-large > * + * {
+  margin-top: 2.5rem;
+}
+
+/* Reading flow optimized for nature content */
+.nature-content {
+  max-width: 65ch;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.nature-content p {
+  margin-bottom: 1.5em;
+}
+
+.nature-content h1,
+.nature-content h2,
+.nature-content h3 {
+  margin-top: 2em;
+  margin-bottom: 0.5em;
+}
+
+.nature-content h1:first-child,
+.nature-content h2:first-child,
+.nature-content h3:first-child {
+  margin-top: 0;
+}
