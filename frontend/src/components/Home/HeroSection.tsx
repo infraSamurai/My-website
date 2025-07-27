@@ -4,8 +4,14 @@ import { ArrowRight, BookOpen } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { OrganicFadeIn, BreathingElement, RippleButton } from '../Nature/OrganicAnimations';
 import { ThemeAwareBackground } from '../backgrounds';
-import { BlurIn, GradientText, GlassCard, ClickSpark, MagneticButton } from '../reactbits';
 import ClientOnly from '../ClientOnly';
+import dynamic from 'next/dynamic';
+
+const BlurIn = dynamic(() => import('../reactbits/BlurIn'), { ssr: false });
+const GradientText = dynamic(() => import('../reactbits/GradientText'), { ssr: false });
+const GlassCard = dynamic(() => import('../reactbits/GlassCard'), { ssr: false });
+const ClickSpark = dynamic(() => import('../reactbits/ClickSpark'), { ssr: false });
+const MagneticButton = dynamic(() => import('../reactbits/MagneticButton'), { ssr: false });
 
 export default function HeroSection() {
   return (
@@ -47,16 +53,25 @@ export default function HeroSection() {
         </motion.div>
 
         {/* Main Heading - Modern Typography */}
-        <BlurIn delay={400}>
+        <ClientOnly fallback={
           <h1 className="heading-hero text-nature-primary font-primary mb-8">
-            <GradientText className="bg-gradient-to-r from-nature-secondary via-nature-accent to-nature-secondary">
-              Where Learning Blooms
-            </GradientText>
+            Where Learning Blooms
+            <div className="text-haiku font-traditional text-nature-secondary mt-4">
+              "In nature's embrace, young minds flourish and grow"
+            </div>
           </h1>
-          <div className="text-haiku font-traditional text-nature-secondary mt-4">
-            "In nature's embrace, young minds flourish and grow"
-          </div>
-        </BlurIn>
+        }>
+          <BlurIn delay={400}>
+            <h1 className="heading-hero text-nature-primary font-primary mb-8">
+              <GradientText className="bg-gradient-to-r from-nature-secondary via-nature-accent to-nature-secondary">
+                Where Learning Blooms
+              </GradientText>
+            </h1>
+            <div className="text-haiku font-traditional text-nature-secondary mt-4">
+              "In nature's embrace, young minds flourish and grow"
+            </div>
+          </BlurIn>
+        </ClientOnly>
 
         {/* Subtitle */}
         <OrganicFadeIn delay={0.6}>
